@@ -2,14 +2,15 @@ from hiclass import LocalClassifierPerNode
 from sklearn.ensemble import RandomForestClassifier
 
 # Define data
-X_train = [[1], [2], [3], [4]]
-X_test = [[4], [3], [2], [1]]
+X_test = [[4], [3], [2], [1], [5]]
 Y_train = [
     ['Animal', 'Mammal', 'Sheep'],
     ['Animal', 'Mammal', 'Cow'],
     ['Animal', 'Reptile', 'Snake'],
     ['Animal', 'Reptile', 'Lizard'],
+    ['Animal', 'Mammal', 'Unknown']
 ]
+X_train = [[i] for i in range(1, len(Y_train)+1)]
 
 # Use random forest classifiers for every node
 rf = RandomForestClassifier()
