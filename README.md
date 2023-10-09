@@ -32,6 +32,6 @@ We welcome contributions and collaboration from the community. If you're interes
 
 ## Contact
 
-For any inquiries or suggestions, please don't hesitate to contact us. You can reach out to [Your Name](mailto:your.email@example.com) for more information.
+For any inquiries or suggestions, please don't hesitate to contact us. You can reach out to [Guilherme Santos](mailto:gssantoz2012@gmail.com) for more information.
 
 Thank you for your interest in our project!
