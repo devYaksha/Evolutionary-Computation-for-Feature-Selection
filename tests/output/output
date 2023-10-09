@@ -1,0 +1,5 @@
+classification_type : binary
+model : -1 1
+RSVM              : 1
+Feature_selection : 0
+0 
