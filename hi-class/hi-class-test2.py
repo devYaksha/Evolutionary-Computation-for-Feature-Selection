@@ -1,34 +1,25 @@
-from hiclass import LocalClassifierPerParentNode
-from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
-from sklearn.linear_model import LogisticRegression
-from sklearn.pipeline import Pipeline
+from sklearn.ensemble import RandomForestClassifier
+
+from hiclass import LocalClassifierPerNode
 
 # Define data
-X_train = [
-    'Struggling to repay loan',
-    'Unable to get annual report',
-]
-X_test = [
-    'Unable to get annual report',
-    'Struggling to repay loan',
-]
+X_train = [[1], [2], [3], [4]]
+X_test = [[4], [3], [2], [1]]
 Y_train = [
-    ['Loan', 'Student loan'],
-    ['Credit reporting', 'Reports']
+    ["Animal", "Mammal", "Sheep"],
+    ["Animal", "Mammal", "Cow"],
+    ["Animal", "Reptile", "Snake"],
+    ["Animal", "Reptile", "Lizard"],
 ]
 
-# Use logistic regression classifiers for every parent node
-lr = LogisticRegression()
-pipeline = Pipeline([
-    ('count', CountVectorizer()),
-    ('tfidf', TfidfTransformer()),
-    ('lcppn', LocalClassifierPerParentNode(local_classifier=lr)),
-])
+# Use random forest classifiers for every node
+# And exclusive siblings policy to select training examples for binary classifiers.
+rf = RandomForestClassifier()
+classifier = LocalClassifierPerNode(local_classifier=rf, binary_policy="inclusive")
 
-# Train local classifier per parent node
-pipeline.fit(X_train, Y_train)
+# Train local classifier per node
+classifier.fit(X_train, Y_train)
 
 # Predict
-predictions = pipeline.predict(X_test)
-
+predictions = classifier.predict(X_test)
 print(predictions)
