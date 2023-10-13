@@ -1,7 +1,7 @@
 from hrsvmPy import *
-parameters = "-k hierarchical svmTest/my_hierarchy.h -a 1 -l 50 "
-trainFilePath = "svmTest/train.dat"
-trainModelOutput = "svmTest/trainModel"
+parameters = "-k hierarchical HRSVM-PY\hierarchicalExample\train.hf -a 1 -l 50 "
+trainFilePath = "HRSVM-PY\hierarchicalExample\train.dat"
+trainModelOutput = "HRSVM-PY\hierarchicalExample\trainModel"
 svmTrain(parameters, trainFilePath, trainModelOutput)
 
 
