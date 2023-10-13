@@ -1,5 +1,5 @@
 from hrsvmPy import *
-
+import os
 
 parameters = "-k hierarchical HRSVM-PY/hierarchicalExample/train.hf -a 1"
 trainFilePath = "HRSVM-PY/hierarchicalExample/train.dat"
@@ -12,3 +12,5 @@ classifier = "HRSVM-PY/hierarchicalExample/trainModel"
 output = "HRSVM-PY/hierarchicalExample"
 
 svmPredict(predictData, classifier, output)
+
+
