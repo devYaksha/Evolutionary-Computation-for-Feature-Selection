@@ -37,6 +37,7 @@ def svmPredict(dataPath, classifierPath, outputFolder):
         os.system("echo Finished")
         os.system("exit")   
 
+#-------------------------------#-------------------------------#-------------------------------#-------------------------------#----------------------------
 
 #Multi-class example:
 """"
