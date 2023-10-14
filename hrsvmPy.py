@@ -33,7 +33,7 @@ def svmPredict(dataPath, classifierPath, outputFolder):
         return
 
     else: 
-        os.system(f'./HRSVM-PY/HRSVM/svm-predict {dataPath} "{classifierPath}" "{outputFolder}"')
+        os.system(f'sudo ./HRSVM-PY/HRSVM/svm-predict {dataPath} {classifierPath} {outputFolder}')
         os.system("echo Finished")
         os.system("exit")   
 
