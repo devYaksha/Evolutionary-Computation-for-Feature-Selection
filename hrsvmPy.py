@@ -16,9 +16,7 @@ def svmTrain(parameters, train_data_path, output_folder_path):
     if parameters != None:
         os.system(f'./HRSVM-PY/HRSVM/svm-train {parameters} "{train_data_path}" "{output_folder_path}"')
     else:
-         os.system(f'./HRSVM-PY/HRSVM/svm-train -k binary -a 1 "{train_data_path}" "{output_folder_path}"') #Kernel type binary and R-SVM algorithm enabled
-    os.system("echo svmTrain Finished")
-    os.system("exit")   
+        print("Neeed HRSVM parameters.")
 
 def svmPredict(dataPath, classifierPath, outputFolder):
     """
