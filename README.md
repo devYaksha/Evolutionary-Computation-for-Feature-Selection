@@ -4,7 +4,7 @@
 
 Welcome to my project! I will to introduce you an evolutionary computation approach for feature selection. My aim is to develop a robust and efficient method that balances the trade-off between candidate subset evaluation and the number of selected features. This approach prevents the search strategy from selecting too many features at once, ensuring the quality of the feature subset.
 
-<!--
+
 ## Objectives
 
 
