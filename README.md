@@ -1,15 +1,11 @@
-# Evolutionary Computation for Feature Selection
+# Evolutionary Computation for Feature Selection --- In construction.
 
 ## Introduction
 
-Welcome to my project! I will to introduce you an evolutionary computation approach for feature selection. My aim is to develop a robust and efficient method that balances the trade-off between candidate subset evaluation and the number of selected features. This approach prevents the search strategy from selecting too many features at once, ensuring the quality of the feature subset.
+Welcome to my project! I will to introduce you an to my Genetic Algorithm approach to the problem of feature selection in global hierarchical classification.
 
 
 ## Objectives
-
-
-
-My project has several key objectives:
 
 1. **Two-Objective Fitness Function**: I plan to use a fitness function with two objectives:
    - Candidate Subset Evaluation
@@ -17,9 +13,8 @@ My project has several key objectives:
 
    By optimizing these objectives simultaneously, i aim to achieve a well-balanced feature selection process.
 
-2. **GA-H-CFS Approach**: I intend to carry out experiments with the GA-H-CFS approach, exploring various types of crossover and mutation operators. This will help us fine-tune our evolutionary algorithm for feature selection.
-
-3. **Efficiency for High-Dimensional Datasets**: I am interested in investigating whether the BFS-H-CFS algorithm remains efficient for datasets with a significantly higher number of features. This research will help us understand the scalability of our approach.
+2. **Curse of Dimensionality**: Generally, the performance of machine learning algorithms (including classifiers) is negatively influenced by increasing the ratio
+ between the number of attributes and the number of instances. My goal is to achieve a well-balanced feature selection process to avoid this problem
 
 ## Extension to Multi-Label Problems
 
