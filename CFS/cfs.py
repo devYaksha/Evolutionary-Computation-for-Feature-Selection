@@ -1,41 +1,18 @@
 import math
 from utils import *
 
-def sum_vc(vector):
-    """Retorna o somatório de um vetor."""
-    return sum(vector)
+def pearsonCoeff(vectorA:list, vectorB:list):
+    """Calculate the Pearson correlation coefficient between two numerical lists.
 
-def mean(vector):
-    """Retorna a média aritmética de um vetor."""
-    return sum_vc(vector)/len(vector)
+    Args:
+        vectorA (list): a numerical list. 
+        vectorB (list): a numerical list. 
 
-def sqsum(vector):
-    """Retorna o somatório dos quadrados dos elementos de um vetor."""
-    s = 0
-    for i in range(len(vector)):
-        s += pow(vector[i], 2)
-    return s
-
-def stdev(vector):
-    """Retorna a raiz quadrada do somatório do vetor ao quadrado"""
-    return math.sqrt(sqsum(vector))
-
-def operatorMinus(vector, numSubtraction):
-    """Retorna um vetor com os índice subtraídos pelo 'numSubtraction'"""
-    vectorCopy = vector[:]
-    for i in range(len(vector)):
-        vectorCopy[i] = vector[i] - numSubtraction
-    return vectorCopy
-
-def operatorMultiplication(vector, numMultiplication):
-    """Retorna um vetor com os elementos multiplicados por 'numMultiplication'."""
-    vectorCopy = vector[:]
-    for i in range(len(vector)):
-        vectorCopy[i] = vector[i] * numMultiplication[i]
-    return vectorCopy
-
-def pearsonCoeff(vectorA, vectorB):
-    """Calcula o coeficiente de correlação de Pearson entre dois vetores, varia de -1 (negativa) a 1 (positiva), com 0 indicando ausência de correlação linear."""
+    Returns:
+        float: Return the Pearson correlation coefficient between two lists.
+        - 1 = Correlation perfect positive
+        - 0 = No correlation
+    """    
     
     mean_A, mean_B = mean(vectorA), mean(vectorB)
     dif_A, dif_B = operatorMinus(vectorA, mean_A), operatorMinus(vectorB, mean_B)
@@ -45,21 +22,22 @@ def pearsonCoeff(vectorA, vectorB):
     try:
         pearson = product_AB / (stdev_A * stdev_B)
     except ZeroDivisionError:
-        return 0.00000001  # Divisão por zero
+        return 0.00000001 
     
     return pearson
 
 
-def binaryVector(k, vector): 
-    """Percorre o "vector" e retorna um vetor binario para o k referenciado"""
-    binary_vector = [0 for i in range(len(vector))]
-    for i in range(len(vector)):
-        if (vector[i] == k):
-            binary_vector[i] = 1
-    return binary_vector
+def pearsonCoeff_cat_num(vectorA:list, vectorB:list):
+    """Calculate the Pearson correlation coefficient between a categorical list and a numerical list.
 
-def pearsonCoeff_cat_num(vectorA, vectorB):  #correlação de Pearson
-    """Calcula a correlação entre dois atributos, sendo vectorA categorico, e vectorB numerico"""
+    Args:
+        vectorA (list): Categorical list.
+        vectorB (list): Numerical list.
+
+    Returns:
+        float: Return the Pearson correlation coefficient between a categorical vector and a numerical vector.
+    """    
+
     size_vectorA = len(vectorA)
     vector_distinct = distinct(vectorA)
     frequence = frequence_double(vector_distinct, vectorA)
@@ -72,18 +50,21 @@ def pearsonCoeff_cat_num(vectorA, vectorB):  #correlação de Pearson
 
     return pearson_sum 
 
-def prob_a_and_b(vectorA, vectorB):
-    """Calcula e retorna a probabilidade de que dois vetores binários, tenham o mesmo valor no mesmo índice."""
-    sum_A_B = 0
-    for i in range(len(vectorA)):
-        if vectorA[i] == 1 and vectorB[i] == 1:
-            sum_A_B += 1
-    return sum_A_B / len(vectorA)
 
-def pearsonCoeff_cat_cat(vectorA, vectorB):
-    """Calcula a correlação entre dois atributos categoricos. 
-    
-    - Muito bom 1--0 Muito ruim"""
+def pearsonCoeff_cat_cat(vectorA:list, vectorB:list):
+    """The Pearson correlation coefficient between two categorical vectors is calculated by the following formula:
+    - r = sum(P(a,b)*|r(a,b)|), where:
+    - P(a,b) = probability of the intersection between two vectors.
+    - r(a,b) = Pearson correlation coefficient between two binary vectors.
+
+    Args:
+        vectorA (list): Categorical list.
+        vectorB (list): Categorical list.
+
+    Returns:
+        float: Return the Pearson correlation coefficient between two categorical lists.
+    """    
+
     sum_cat_cat = 0 
     pearson = 0
     dist_A, dist_B = distinct(vectorA), distinct(vectorB)
@@ -99,18 +80,14 @@ def pearsonCoeff_cat_cat(vectorA, vectorB):
     return sum_cat_cat
 
 
-def possible_class_hierarchy(a_class, dist_class):
-    """
-    A função itera sobre as classes distintas e constrói um vetor de classes possíveis
-    na hierarquia. O resultado é ordenado.
+def possible_class_hierarchy(a_class:list, dist_class:list):
+    """Iterates over the distinct classes and builds a vector of possible classes
+    in the hierarchy. The result is sorted.
 
-    Args:
-    - a_class: Não é usado na função.
-    - dist_class: Um vetor de strings que contém classes distintas.
+    Returns:
+        list: A possible class hierarchy.
+    """    
 
-    Return:
-    - List
-"""
     possible_class = []
     concate = []
     for i in range(len(dist_class)):
@@ -131,18 +108,14 @@ def possible_class_hierarchy(a_class, dist_class):
     return possible_class
 
 
-def class_to_vector(a_class, possible_class):
-    """
-    Esta função recebe uma lista de instâncias de classe e uma lista de hierarquias de classe
-    possíveis. Ela gera um vetor binário para cada instância de classe, onde cada elemento
-    no vetor corresponde à presença (1) ou ausência (0) de uma hierarquia de classe específica em 'possible_class'.
+def class_to_vector(a_class:list, possible_class:list):
+    """receives a list of class instances and a list of possible class hierarchies.
 
-    Args:
-    - a_class: Uma lista de instâncias de classe.
-    - possible_class: Uma lista de hierarquias de classe possíveis, gerada por `possible_class_hierarchy()`
+    Returns:
+        list: It generates a binary vector for each class instance, where each element in the vector corresponds
+    to the presence (1) or absence (0) of a specific class hierarchy in 'possible_class'.
+    """    
 
-    Return:
-    - lista de listas, (Matriz): Uma lista de vetores binários representando a ocorrência de classes."""
     occurrence = []
     for i in range(len(a_class)):
         instance_vec = [0]*len(possible_class)
@@ -156,10 +129,18 @@ def class_to_vector(a_class, possible_class):
     return occurrence
 
 
-def correlation_fl_multilabel(class_vector, data, f_type):
-    """
-    Cria o vetor de correlacao entre todas as features da base e o atributo classe, considerando cada classe da heirarquia como classe binaria
-    """
+def correlation_fl_multilabel(class_vector:list, data:float, f_type):
+    """Create a list of correlation between all features of the base and the class attribute, considering each class of the hierarchy as a binary class.
+
+    Args:
+        - class_vector (list): __
+        -  data (float): 
+        - f_type (?): 
+
+    Returns:
+        list: A list of correlation between all features of the base and the class attribute.
+    """    
+
     correlation = []
     tam_class_vector = len(class_vector[0])
     tam_features = len(data[0])
@@ -185,24 +166,7 @@ def correlation_fl_multilabel(class_vector, data, f_type):
         
     return correlation
 
-def class_level(possible_class):
-    """percorre o vetor de classes possiveis e retorna um vetor de mesmo tamanho com o nivel da classe"""
-    level_vector = []
-    for i in range(len(possible_class)):
-        aux_str = explode(possible_class[i], '.')
-        level_vector.append(len(aux_str))
-    return level_vector
-
-def classes_per_level(max_level, possible_class_level):
-    """percorre o vetor de classes possiveis e retorna um vetor com o total de classes por nivel da hierarquia"""
-    total_classes_per_level = [0 for i in range(max_level)]
-    for i in range(len(possible_class_level)):
-        total_classes_per_level[possible_class_level[i]-1] += 1
-    
-    return total_classes_per_level
-
-
-
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def correlation_fl_hierarchical(class_vec, data, f_type, class_level, w_0, classes_per_level):
     tam_class_vec = len(class_vec[0])
