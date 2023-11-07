@@ -3,7 +3,8 @@ import ctypes
 
 def call_nayes(training_file, test_file, result_file):
     if os.name == "nt":
-        lib = ctypes.CDLL(r"/Users/gssan/OneDrive/Área de Trabalho/Evolutionary-Computation-for-Feature-Selection/src/nbayes.dll")
+        lib = ctypes.CDLL(r"C:/Users/gssan/OneDrive/Área de Trabalho/Evolutionary-Computation-for-Feature-Selection/src/nbayes.dll")
+
     
     else:
         lib = ctypes.CDLL("/home/yksh/Desktop/Evolutionary-Computation-for-Feature-Selection/nbayes.so")
