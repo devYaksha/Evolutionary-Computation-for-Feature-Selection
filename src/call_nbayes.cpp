@@ -1,8 +1,8 @@
 #include <string>
-#include "./HFS-GMNB-CPP/nbayes.h"
+#include "./HFS-GMNB/nbayes.h"
 
 extern "C" {
-    // g++ -shared -fPIC -o nbayes.so ./HFS-GMNB-CPP/*.cpp ./call_nbayes.cpp
+    // g++ -shared -fPIC -o nbayes.so ./src/HFS-GMNB/*.cpp ./src/call_nbayes.cpp
     #ifdef _WIN32
     #define EXPORT __declspec(dllexport)
     #else
@@ -15,9 +15,10 @@ extern "C" {
         std::string usfStr(1, usf);    // Convert char to a C++ string
 
         long double result = nbayes(mlnpStr, usfStr, training_dataset, test_dataset, result_file);
+        float floatValue_result = result; 
 
-        std::cout << "The result of the classification is: " << result << std::endl;
+        std::cout << "The result of the classification is: " << floatValue_result << std::endl;
 
-        return 0;
+        return floatValue_result;
     }
 }
