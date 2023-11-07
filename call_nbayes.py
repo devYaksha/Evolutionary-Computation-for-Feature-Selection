@@ -1,15 +1,19 @@
-import os
 import ctypes
 
+# Load the shared library
+nbayes_dll = ctypes.CDLL('/home/yksh/Desktop/Evolutionary-Computation-for-Feature-Selection/nbayes.so')
 
-training_file = "./datasets/treino1.arff"
-test_file = "./datasets/teste1.arff"
-result_file = "./datasets/result.txt"
+# Define the argument and return types for the function
+nbayes_dll.call_nbayes.argtypes = [ctypes.c_char, ctypes.c_char, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
+nbayes_dll.call_nbayes.restype = ctypes.c_int  # It returns an int, not a float
 
-lib = ctypes.CDLL("C://Users/gssan/OneDrive/Área de Trabalho/Evolutionary-Computation-for-Feature-Selection/nbayes.dll")
-lib.call_nbayes.argtypes = (ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p)
-lib.call_nbayes.restype = ctypes.c_int
+mlnp = b'n'  # Use 'b' to create bytes-like objects for char
+usf = b'n' 
+training_dataset = b'./datasets/treino1.arff'
+test_dataset = b'./datasets/teste1.arff'
+result_file = b'./results.txt'
 
+result = nbayes_dll.call_nbayes(mlnp, usf, training_dataset, test_dataset, result_file)
 
-#__declspec(dllexport) int call_nbayes(string training_dataset, string test_dataset, string result_file)
-lib.call_nbayes(training_file, test_file, result_file)
+if result != 0:
+    print("Python Error: execution of call_nbayes.")
