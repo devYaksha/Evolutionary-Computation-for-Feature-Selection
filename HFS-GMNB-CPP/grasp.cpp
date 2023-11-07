@@ -70,7 +70,7 @@ vector <long double> classifier_fo(string path){
 
 }
 
-
+/*
 
 int main(int argc, char* argv[]){
 
@@ -100,3 +100,4 @@ int main(int argc, char* argv[]){
 
     return 0;
 }
+*/
