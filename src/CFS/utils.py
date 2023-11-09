@@ -1,6 +1,6 @@
 import math
 
-def in_array(value, vector):
+def in_array(value:float, vector:list):
     """Verifica se o 'value' esta no 'vector'"""
     for i in range(len(vector)):
         if value == vector[i]:
@@ -8,7 +8,7 @@ def in_array(value, vector):
     return -1
 
 
-def distinct(categorical):
+def distinct(categorical:list):
     """Recebe uma lista de valores categóricos e retorna uma lista de valores distintos"""
     vector_distinct = [categorical[0]]
     for i in range(1, len(categorical)):
