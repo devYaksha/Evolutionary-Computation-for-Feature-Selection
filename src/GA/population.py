@@ -82,4 +82,5 @@ class GeneticAlgorithm:
 t1 = GeneticAlgorithm("./datasets/CellCycle/treino1.arff")
 t2 = GeneticAlgorithm("./datasets/treino1.arff")
 
-print(t1.classes_data_hash)
+print(t2.classes_data_hash)
+print(t2.get_dataset_name())

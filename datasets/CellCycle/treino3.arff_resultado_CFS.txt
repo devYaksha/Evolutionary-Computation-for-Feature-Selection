@@ -1,8 +1,0 @@
-Atributo: 10
-Atributo: 18
-Atributo: 23
-Atributo: 40
-Atributo: 72
-Numero total de atributos: 5
-Merit da CFS do melhor set: 4.34193
-
