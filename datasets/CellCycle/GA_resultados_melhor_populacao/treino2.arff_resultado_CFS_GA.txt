@@ -1,0 +1,32 @@
+Atributo: 0
+Atributo: 5
+Atributo: 15
+Atributo: 18
+Atributo: 19
+Atributo: 20
+Atributo: 23
+Atributo: 28
+Atributo: 30
+Atributo: 31
+Atributo: 35
+Atributo: 36
+Atributo: 37
+Atributo: 41
+Atributo: 44
+Atributo: 47
+Atributo: 51
+Atributo: 53
+Atributo: 55
+Atributo: 58
+Atributo: 59
+Atributo: 60
+Atributo: 62
+Atributo: 63
+Atributo: 68
+Atributo: 70
+Atributo: 72
+Atributo: 75
+Atributo: 76
+Numero total de atributos: 29
+Merit da CFS do melhor set: 0.124863
+
