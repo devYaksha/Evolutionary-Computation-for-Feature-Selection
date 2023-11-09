@@ -4,7 +4,8 @@ Feature selection is a widely adopted preprocessing step in the field of data mi
 
 However, despite the benefits of feature selection for classification tasks, as far as we know, few studies in the literature address attribute selection for the context of hierarchical classification. 
 
-This project proposes the use of genetic algorithms in a hybrid supervised feature selection approach, combining filter-type metrics adapted for hierarchical classification with the use of genetic algorithms to explore the subset space of attributes. Databases from the protein and image domains will be utilized to conduct computational experiments to validate the performance of the proposed algorithms using global hierarchical classifiers proposed in the literature.
+This project proposes the use of genetic algorithms in a hybrid supervised feature selection approach, combining filter-type metrics adapted for hierarchical classification with the use of genetic algorithms to explore the subset space of attributes.
+
 
 ## Objectives
 
@@ -18,12 +19,6 @@ The main goalis to propose the development of a hybrid feature selection method 
 2. **Experiments**: Conducting computational experiments using hierarchical databases related to protein function prediction and image problems.
 
 3. **Analyzing the state of the art**: Comparing the proposed approach with other feature selection methods available in the literature and with the use of global classifiers without attribute selection.
-
-## Extension to Multi-Label Problems
-
-I believe that an extended version of a method for multi-label problems holds great promise. Multi-label problems involve assigning multiple labels to a single data point, and the feature selection method can be a valuable tool in solving these challenges.
-
-In particular, the approach has the potential to address extreme multi-label classification problems. In such scenarios, the goal is to learn feature architectures and classifiers that can automatically tag a data point with the most relevant subset of labels from an extremely large label set. I believe this method can contribute significantly to this field.
 
 ## Contact
 
