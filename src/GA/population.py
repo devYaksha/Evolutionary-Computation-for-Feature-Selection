@@ -79,8 +79,8 @@ class GeneticAlgorithm:
         return self.classes_data_hash
 
 
-t1 = GeneticAlgorithm("./datasets/CellCycle/treino1.arff")
-t2 = GeneticAlgorithm("./datasets/treino1.arff")
+t1 = GeneticAlgorithm("./datasets/treino0.arff")
+t2 = GeneticAlgorithm("./datasets/treino0.arff")
 
-print(t2.classes_data_hash)
 print(t2.get_dataset_name())
+print(t2.classes_data_hash.keys())

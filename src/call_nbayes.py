@@ -40,4 +40,4 @@ def call_nbayes(mlnp:str, usf:str, training_dataset:str, test_dataset:str, resul
     return result
 
 
-call_nbayes('y', 'y', './datasets/treino1.arff', './datasets/teste1.arff', './datasets/results.txt')
+call_nbayes('y', 'y', './datasets/treino1.arff', './datasets/teste0.arff', './datasets/results.txt')
