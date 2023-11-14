@@ -2,11 +2,11 @@ import math
 from utils import *
 
 def pearsonCoeff(vectorA:list, vectorB:list):
-    """Calculate the Pearson correlation coefficient between two numerical lists.
+    """Calculate the Pearson correlation coefficient between two {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}al lists.
 
     Args:
-        vectorA (list): a numerical list. 
-        vectorB (list): a numerical list. 
+        vectorA (list): a {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}al list. 
+        vectorB (list): a {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}al list. 
 
     Returns:
         float: Return the Pearson correlation coefficient between two lists.
@@ -28,14 +28,14 @@ def pearsonCoeff(vectorA:list, vectorB:list):
 
 
 def pearsonCoeff_cat_num(vectorA:list, vectorB:list):
-    """Calculate the Pearson correlation coefficient between a categorical list and a numerical list.
+    """Calculate the Pearson correlation coefficient between a categorical list and a {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}al list.
 
     Args:
         vectorA (list): Categorical list.
-        vectorB (list): Numerical list.
+        vectorB (list): {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}al list.
 
     Returns:
-        float: Return the Pearson correlation coefficient between a categorical vector and a numerical vector.
+        float: Return the Pearson correlation coefficient between a categorical vector and a {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}al vector.
     """    
 
     size_vectorA = len(vectorA)
@@ -205,17 +205,17 @@ def correlation_f_to_f_vec(data, f_type):
     for k in range(tam_features - 1):
         correlation = [] #reseta a cada iteração
         for j in range(k + 1, tam_features):
-            if f_type[k] == 1 and f_type[j] == 1:  # numerico e numerico
+            if f_type[k] == 1 and f_type[j] == 1:  # {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}o e {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}o
                 f1 = get_column(data, k)
                 f2 = get_column(data, j)
                 pearson = pearsonCoeff(f1, f2)
                 correlation.append(pearson)
-            elif f_type[k] == 1 and f_type[j] == 2:  # numerico e categorico
+            elif f_type[k] == 1 and f_type[j] == 2:  # {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}o e categorico
                 f1 = get_column(data, k)
                 f2 = get_column(data, j)
                 pearson = pearsonCoeff_cat_num(f2, f1)
                 correlation.append(pearson)
-            elif f_type[k] == 2 and f_type[j] == 1:  # categorico e numerico
+            elif f_type[k] == 2 and f_type[j] == 1:  # categorico e {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}o
                 f1 = get_column(data, k)
                 f2 = get_column(data, j)
                 pearson = pearsonCoeff_cat_num(f1, f2)

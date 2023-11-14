@@ -1,0 +1,16 @@
+@relation dataset-treinamento
+@attribute x1 numeric
+@attribute x2 numeric
+@attribute x3 numeric
+@attribute x4 numeric
+@attribute x5 numeric
+@attribute class {classeA, classeB, classeC, classeD, classeE}
+@data
+13,9,9,6,8,classeA
+1,10,6,6,3,classeB
+15,3,3,10,6,classeC
+8,6,5,13,13,classeD
+12,2,13,1,11,classeE
+
+
+

@@ -18,7 +18,7 @@ def call_nbayes(mlnp:str, usf:str, training_dataset:str, test_dataset:str, resul
         return
     
     if os.name == 'nt':
-        print("Error: nbayes.so is not compatible with Windows yet.")
+        print("nbayes.so is not compatible with Windows.")
         return
 
     nbayes_dll = ctypes.CDLL('./src/nbayes.so')
@@ -40,4 +40,11 @@ def call_nbayes(mlnp:str, usf:str, training_dataset:str, test_dataset:str, resul
     return result
 
 
-call_nbayes('y', 'y', './datasets/treino1.arff', './datasets/teste0.arff', './datasets/results.txt')
+x = call_nbayes('y', 'y', './datasets/simple_treino.arff', './datasets/simple_teste.arff', './datasets/results.txt')
+print(x)
+
+"""Example:
+
+cromossomo = [1,1,0,0,0]
+13,9,classeA
+crossvalidation-5fold"""
