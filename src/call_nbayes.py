@@ -43,8 +43,3 @@ def call_nbayes(mlnp:str, usf:str, training_dataset:str, test_dataset:str, resul
 x = call_nbayes('y', 'y', './datasets/simple_treino.arff', './datasets/simple_teste.arff', './datasets/results.txt')
 print(x)
 
-"""Example:
-
-cromossomo = [1,1,0,0,0]
-13,9,classeA
-crossvalidation-5fold"""
