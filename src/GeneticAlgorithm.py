@@ -1,18 +1,25 @@
 import random as rand
-
+from call_nbayes import *
 from organize_data import Dataset
 
 class GeneticAlgorithm:
-    def __init__(self, filename:str, population_size:int):
-        self.dataset = Dataset(filename)
+    def __init__(self, training_filename:str, test_filename:str, population_size:int, usefullness:str,mandatory_leaf_node_prediction:str):
+        self.dataset = Dataset(test_filename)
         self.population_size = population_size
         
+        self.num_children = 0
+        self.output_nbayes = ""
+        self.children_path = ""
+
         self.attributes_population = []
         self.attributes_population_index = []
         self.create_attributes_population()
 
         self.population = []
         self.create_population()
+        
+
+        call_nbayes(usefullness, mandatory_leaf_node_prediction, training_filename, self.children_path, self.output_nbayes)
 
     def create_attributes_population(self):
         
@@ -34,6 +41,13 @@ class GeneticAlgorithm:
             temp_population.append(dataset[i][-1])
             self.population.append(temp_population)
 
+        self.dataset.save_children(self.attributes_population, self.population, self.num_children)
+
+        self.children_path = f'./datasets/children_{self.num_children}.txt'
+        self.output_nbayes = f'./datasets/output_nbayes_{self.num_children}.txt'
+
+        self.num_children += 1
+
     def get_attributes_population(self):
         return self.attributes_population
 
@@ -43,10 +57,12 @@ class GeneticAlgorithm:
     def get_population(self):
         return self.population
 
-t1 = GeneticAlgorithm("datasets/simple_treino.arff", 2)
-#t2 = GeneticAlgorithm("datasets/treino1.arff")
 
-print("\033[H\033[J")
-print(t1.get_attributes_population())
-print(t1.get_attributes_population_index())
-print(t1.get_population())
+if __name__ == "__main__":
+    print("\033[H\033[J")
+
+    #t2 = GeneticAlgorithm("./datasets/simple_treino.arff","./datasets/simple_test.arff", 2, 'y', 'y')
+    call_nbayes('y','y', './datasets/simple_treino.arff', './datasets/children_0.txt', './datasets/output_nbayes_manual_test.txt')
+    
+
+    

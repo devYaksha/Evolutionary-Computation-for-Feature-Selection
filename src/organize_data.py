@@ -2,16 +2,22 @@ class Dataset:
 
     def __init__(self, filename):
         self.dataset, self.dataset_attributes, self.dataset_data = self.get_dataset_info(filename)
-        self.dataset_name = self.dataset[0]
-        self.dataset_attribute_class = self.dataset_attributes[-2]
-        self.num_classes = 0
-        self.num_features = 0
 
-        self.organize_classes_data()
-        self.organize_dataset_data()
+        try:
+            self.dataset.remove('')
+            self.dataset_attributes.remove('')
+            self.dataset_data.remove('')
 
-        self.dataset_attributes.remove('')
-        self.dataset_attributes.pop(-1)
+        finally:
+            self.dataset_name = self.dataset[0]
+            self.dataset_attribute_class = self.dataset_attributes[-1]
+            self.num_classes = 0
+            self.num_features = 0
+
+            self.organize_classes_data()
+            self.organize_dataset_data()
+
+            self.dataset_attributes.pop(-1)
 
     def get_dataset_info(self, filename):
         try:
@@ -47,14 +53,32 @@ class Dataset:
     def organize_dataset_data(self):
         self.dataset_data = [line.split(',') for line in self.dataset_data]
 
-    def add_node(self, node):
-        if node not in self.classes_data_hash:
-            self.classes_data_hash[node] = {}
-            self.num_classes += 1
+    def save_children(self,attributes_population:list, population:list, num_children:int):
+            with open(f'./datasets/children_{num_children}.txt', 'w+') as file:
+                file.write(self.get_dataset_name() + '\n')
+                for i in range(len(attributes_population)):
+                    file.write(attributes_population[i] + '\n')
 
-    def add_edge(self, data_class, value):
-        self.classes_data_hash[data_class] = value
-        self.num_features += 1 
+                attribute_str = ["@attribute class {"]
+                temp = self.get_dataset_attributes_class()
+                for item in temp:
+                    if item != '{' and item != '}':
+                        attribute_str.append(item)
+                        attribute_str.append(',')
+
+
+                attribute_str[-1] = '}'
+                attribute_str = ''.join(attribute_str)
+                file.write(attribute_str + '\n')
+                file.write('@data\n')
+                for j in range(len(population)):
+                    for k in range(len(population[j])):
+                        file.write(population[j][k])
+                        if k != len(population[j]) - 1:
+                            file.write(',')
+                    file.write('\n')
+
+
 
     def get_dataset(self):
         return self.dataset
@@ -71,6 +95,4 @@ class Dataset:
     def get_dataset_attributes_class(self):
         return self.dataset_attribute_class
 
-    def get_data_hash(self):
-        return self.classes_data_hash
     

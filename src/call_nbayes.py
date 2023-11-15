@@ -21,6 +21,8 @@ def call_nbayes(mlnp:str, usf:str, training_dataset:str, test_dataset:str, resul
         print("nbayes.so is not compatible with Windows.")
         return
 
+    #print("Calling nbayes function from nbayes.so...")
+
     nbayes_dll = ctypes.CDLL('./src/nbayes.so')
 
     nbayes_dll.call_nbayes.argtypes = [ctypes.c_char, ctypes.c_char, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
@@ -35,11 +37,9 @@ def call_nbayes(mlnp:str, usf:str, training_dataset:str, test_dataset:str, resul
 
     result = float(nbayes_dll.call_nbayes(mlnp, usf, training_dataset, test_dataset, result_file))
 
-    #print("Result: ", result) # Long double -> float
+    print("PyResult: ", result) # Long double -> float
     
     return result
 
 
-x = call_nbayes('y', 'y', './datasets/simple_treino.arff', './datasets/simple_teste.arff', './datasets/results.txt')
-print(x)
 
