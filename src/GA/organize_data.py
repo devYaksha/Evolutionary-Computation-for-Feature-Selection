@@ -4,13 +4,14 @@ class Dataset:
         self.dataset, self.dataset_attributes, self.dataset_data = self.get_dataset_info(filename)
         self.dataset_name = self.dataset[0]
         self.dataset_attribute_class = self.dataset_attributes[-2]
-        self.classes_data_hash = {}
         self.num_classes = 0
         self.num_features = 0
 
         self.organize_classes_data()
         self.organize_dataset_data()
-        self.insert_data_on_hash()
+
+        self.dataset_attributes.remove('')
+        self.dataset_attributes.pop(-1)
 
     def get_dataset_info(self, filename):
         try:
@@ -43,9 +44,6 @@ class Dataset:
         temp_dataset_attributes = temp_dataset_attributes[start + 1:end].split(',')
         self.dataset_attribute_class = temp_dataset_attributes
 
-        for i in self.dataset_attribute_class:
-            self.add_node(i)
-
     def organize_dataset_data(self):
         self.dataset_data = [line.split(',') for line in self.dataset_data]
 
@@ -72,10 +70,6 @@ class Dataset:
 
     def get_dataset_attributes_class(self):
         return self.dataset_attribute_class
-
-    def insert_data_on_hash(self):
-        for data_row in self.dataset_data:
-            self.add_edge(data_row[-1], data_row[:-1])
 
     def get_data_hash(self):
         return self.classes_data_hash
