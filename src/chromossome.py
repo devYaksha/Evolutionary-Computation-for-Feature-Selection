@@ -20,7 +20,7 @@ class Chromosome:
         self.chromosome_fitness = 0
         
 
-        #self.chromosome_fitness = call_nbayes(usefullness, mandatory_leaf_node_prediction, training_filename, self.children_path, self.output_nbayes)
+        self.chromosome_fitness = call_nbayes(usefullness, mandatory_leaf_node_prediction, training_filename, self.children_path, self.output_nbayes)
 
     def create_attributes_population(self):
         
@@ -55,6 +55,9 @@ class Chromosome:
     
     def get_population(self):
         return self.population
+    
+    def get_fitness(self):
+        return self.chromosome_fitness
 
 
     
