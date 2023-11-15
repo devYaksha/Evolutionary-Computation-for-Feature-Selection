@@ -2,12 +2,12 @@ import random as rand
 from call_nbayes import *
 from organize_data import Dataset
 
-class GeneticAlgorithm:
-    def __init__(self, training_filename:str, test_filename:str, population_size:int, usefullness:str,mandatory_leaf_node_prediction:str):
+class Chromosome:
+    def __init__(self, training_filename:str, test_filename:str, population_size:int, usefullness:str,mandatory_leaf_node_prediction:str, children_num:int):
         self.dataset = Dataset(test_filename)
         self.population_size = population_size
         
-        self.num_children = 0
+        self.children_id = children_num
         self.output_nbayes = ""
         self.children_path = ""
 
@@ -17,9 +17,10 @@ class GeneticAlgorithm:
 
         self.population = []
         self.create_population()
+        self.chromosome_fitness = 0
         
 
-        call_nbayes(usefullness, mandatory_leaf_node_prediction, training_filename, self.children_path, self.output_nbayes)
+        #self.chromosome_fitness = call_nbayes(usefullness, mandatory_leaf_node_prediction, training_filename, self.children_path, self.output_nbayes)
 
     def create_attributes_population(self):
         
@@ -41,12 +42,10 @@ class GeneticAlgorithm:
             temp_population.append(dataset[i][-1])
             self.population.append(temp_population)
 
-        self.dataset.save_children(self.attributes_population, self.population, self.num_children)
+        self.dataset.save_children(self.attributes_population, self.population, self.children_id)
 
-        self.children_path = f'./datasets/children_{self.num_children}.txt'
-        self.output_nbayes = f'./datasets/output_nbayes_{self.num_children}.txt'
-
-        self.num_children += 1
+        self.children_path = f'./datasets/chromossome_{self.children_id}.arff'
+        self.output_nbayes = f'./datasets/output_nbayes_{self.children_id}.arff'
 
     def get_attributes_population(self):
         return self.attributes_population
@@ -58,11 +57,7 @@ class GeneticAlgorithm:
         return self.population
 
 
-if __name__ == "__main__":
-    print("\033[H\033[J")
-
-    #t2 = GeneticAlgorithm("./datasets/simple_treino.arff","./datasets/simple_test.arff", 2, 'y', 'y')
-    call_nbayes('y','y', './datasets/simple_treino.arff', './datasets/children_0.txt', './datasets/output_nbayes_manual_test.txt')
     
+
 
     

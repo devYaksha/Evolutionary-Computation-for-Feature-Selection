@@ -8,7 +8,11 @@ class Dataset:
             self.dataset_attributes.remove('')
             self.dataset_data.remove('')
 
+        except Exception as e:
+            pass
+
         finally:
+            self.dataset_attributes.pop(-1)
             self.dataset_name = self.dataset[0]
             self.dataset_attribute_class = self.dataset_attributes[-1]
             self.num_classes = 0
@@ -54,7 +58,7 @@ class Dataset:
         self.dataset_data = [line.split(',') for line in self.dataset_data]
 
     def save_children(self,attributes_population:list, population:list, num_children:int):
-            with open(f'./datasets/children_{num_children}.txt', 'w+') as file:
+            with open(f'./datasets/chromossome_{num_children}.arff', 'w+') as file:
                 file.write(self.get_dataset_name() + '\n')
                 for i in range(len(attributes_population)):
                     file.write(attributes_population[i] + '\n')
@@ -77,7 +81,6 @@ class Dataset:
                         if k != len(population[j]) - 1:
                             file.write(',')
                     file.write('\n')
-
 
 
     def get_dataset(self):
