@@ -1,4 +1,5 @@
 from chromossome import Chromosome
+from genetic_operators import *
 
 class GeneticAlgorithm:
     """This class is responsible for the genetic algorithm.
@@ -11,7 +12,10 @@ class GeneticAlgorithm:
     - training_filename: The path of the training file.
     - test_filename: The path of the test file.
     """
-    def __init__(self, population_size, num_attributes, usefulness, mandatory_leaf_node_prediction, training_filename, test_filename):
+    def __init__(self, population_size, num_attributes, num_generations, usefulness, mandatory_leaf_node_prediction, training_filename, test_filename):
+
+        # Read and organize Dataset
+
         self.population_size = population_size
         self.num_attributes = num_attributes
         self.usefulness = usefulness
@@ -20,7 +24,22 @@ class GeneticAlgorithm:
         self.test_filename = test_filename
         self.population = []
         self.population_fitness = []
+        self.num_generations = num_generations
+        
+        # Start Genetic Algoritmh
+
         self.create_population()
+        
+        
+        # Genetic Operators
+
+        for i in range(self.num_generations):
+            
+            self.calculate_population_fitness()
+            self.population = tournament(self.population, self.population_fitness, population_size)
+            self.population = crossover(self.population, self.num_attributes)
+            
+            #mutation
 
     def create_population(self):
         for i in range(self.population_size):
@@ -43,7 +62,7 @@ class GeneticAlgorithm:
 
 if __name__ == "__main__":
     print("\033[H\033[J")
-    k = GeneticAlgorithm(3, 2, 'y', 'y', "./datasets/simple_treino.arff", "./datasets/simple_test.arff")
+    k = GeneticAlgorithm(3, 2, 1, 'y', 'y', "./datasets/simple_treino.arff", "./datasets/simple_test.arff")
     #j = GeneticAlgorithm(3, 2, 'y', 'y', "./datasets/treino0.arff", "./datasets/teste0.arff")
 
     
