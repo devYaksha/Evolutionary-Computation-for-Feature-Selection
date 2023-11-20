@@ -23,13 +23,26 @@ class Chromosome:
         self.chromosome_fitness = call_nbayes(usefullness, mandatory_leaf_node_prediction, training_filename, self.children_path, self.output_nbayes)
 
     def create_attributes_population(self):
-        
+        ordered_pop = []
+        for i in range(len(self.dataset.get_dataset_attributes())):
+            ordered_pop.append(0)
+
         while len(self.attributes_population) < self.population_size:
             rand_gene = rand.choice(self.dataset.get_dataset_attributes())
             rand_gene_index = self.dataset.get_dataset_attributes().index(rand_gene)
             if rand_gene not in self.attributes_population:
                 self.attributes_population.append(rand_gene)
                 self.attributes_population_index.append(rand_gene_index)
+                ordered_pop[rand_gene_index] = self.attributes_population[-1]
+
+        while 0 in ordered_pop:
+            ordered_pop.remove(0)
+
+
+        self.attributes_population = ordered_pop
+
+
+
 
     def create_population(self):
         dataset = self.dataset.get_dataset_data()

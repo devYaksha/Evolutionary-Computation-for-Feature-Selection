@@ -22,10 +22,11 @@ class GeneticAlgorithm:
         
         self.population = []
         self.population_fitness = []
+        self.index = []
 
         self.create_population()
-        self.calculate_population_fitness()
-
+ 
+        #self.calculate_population_fitness()
 
     def create_population(self):
         for i in range(self.population_size):
@@ -33,12 +34,12 @@ class GeneticAlgorithm:
                 self.training_filename, self.test_filename, self.num_attributes,
                 self.usefulness, self.mandatory_leaf_node_prediction, len(self.population)
             )
-            self.population.append(chromosome)
-
+            self.population.append((chromosome))
+            chromosome.attributes_population_index.sort()
+    
     def calculate_population_fitness(self):
         for i in range(self.population_size):
             self.population_fitness.append(self.population[i].get_fitness())
-            print(f'Chromosome {i} fitness: {self.population_fitness[i]}')
 
     def get_population(self):
         return self.population
@@ -50,3 +51,5 @@ if __name__ == "__main__":
     print("\033[H\033[J")
     k = GeneticAlgorithm(3, 2, 'y', 'y', "./datasets/simple_treino.arff", "./datasets/simple_test.arff")
     #j = GeneticAlgorithm(3, 2, 'y', 'y', "./datasets/treino0.arff", "./datasets/teste0.arff")
+
+    

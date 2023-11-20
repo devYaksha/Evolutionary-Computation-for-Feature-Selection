@@ -37,7 +37,7 @@ def call_nbayes(mlnp:str, usf:str, training_dataset:str, test_dataset:str, resul
 
     result = float(nbayes_dll.call_nbayes(mlnp, usf, training_dataset, test_dataset, result_file))
 
-    print("PyResult: ", result) # Long double -> float
+    #print("PyResult: ", result) # Long double -> float
     
     return result
 
