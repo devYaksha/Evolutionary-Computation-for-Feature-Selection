@@ -1,3 +1,4 @@
+import os
 from chromossome import Chromosome
 from genetic_operators import *
 
@@ -15,6 +16,7 @@ class GeneticAlgorithm:
     def __init__(self, population_size, num_attributes, num_generations, usefulness, mandatory_leaf_node_prediction, training_filename, test_filename):
 
         # Read and organize Dataset
+        self.delete_old_childrens()
 
         self.population_size = population_size
         self.num_attributes = num_attributes
@@ -50,6 +52,15 @@ class GeneticAlgorithm:
             self.population.append(chromosome)
             chromosome.attributes_population_index.sort()
 
+    def delete_old_childrens(self):
+        current_directory = "./datasets"
+        files = os.listdir(current_directory)
+        for file in files:
+            if file.endswith('.arff') and (file.startswith('c') or file.startswith('o')):
+                file_path = os.path.join(current_directory, file)
+                os.remove(file_path)
+
+
     def calculate_population_fitness(self):
         self.population_fitness = [chromosome.get_fitness() for chromosome in self.population]
 
@@ -62,7 +73,7 @@ class GeneticAlgorithm:
 
 if __name__ == "__main__":
     print("\033[H\033[J")
-    k = GeneticAlgorithm(3, 2, 1, 'y', 'y', "./datasets/simple_treino.arff", "./datasets/simple_test.arff")
-    #j = GeneticAlgorithm(3, 2, 'y', 'y', "./datasets/treino0.arff", "./datasets/teste0.arff")
+    k = GeneticAlgorithm(2, 2, 1, 'y', 'y', "./datasets/simple_treino.arff", "./datasets/simple_test.arff")
+
 
     

@@ -1,3 +1,5 @@
+import os
+
 class Dataset:
 
     def __init__(self, filename):

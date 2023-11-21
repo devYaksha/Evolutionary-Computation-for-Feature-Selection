@@ -1,6 +1,5 @@
 import os
 import ctypes
-import numpy as np
 
 def call_nbayes(mlnp:str, usf:str, training_dataset:str, test_dataset:str, result_file:str):
     """Call nbayes function from nbayes.so, read docs/GMNB_2009_Silla.pdf for more information.
@@ -20,8 +19,6 @@ def call_nbayes(mlnp:str, usf:str, training_dataset:str, test_dataset:str, resul
     if os.name == 'nt':
         print("nbayes.so is not compatible with Windows.")
         return
-
-    #print("Calling nbayes function from nbayes.so...")
 
     nbayes_dll = ctypes.CDLL('./src/nbayes.so')
 

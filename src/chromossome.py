@@ -11,10 +11,17 @@ class Chromosome:
         self.children_path = ""
         self.attributes_population = []
         self.attributes_population_index = []
-        self.create_attributes_population()
         self.population = []
+        self.test_filename = test_filename
+        self.training_filename = training_filename
+        self.usefullness = usefullness
+        self.mandatory_leaf_node_prediction = mandatory_leaf_node_prediction
+
+        self.create_attributes_population()
         self.create_population()
-        self.chromosome_fitness = call_nbayes(usefullness, mandatory_leaf_node_prediction, training_filename, self.children_path, self.output_nbayes)
+
+        self.chromosome_fitness = 0.0 #tests only
+        #self.chromosome_fitness = call_nbayes(usefullness, mandatory_leaf_node_prediction, training_filename, self.children_path, self.output_nbayes)
 
     def create_attributes_population(self):
         ordered_pop = [0] * len(self.dataset.get_dataset_attributes())
@@ -38,6 +45,20 @@ class Chromosome:
         self.children_path = f'./datasets/chromossome_{self.children_id}.arff'
         self.output_nbayes = f'./datasets/output_nbayes_{self.children_id}.arff'
 
+    def print_chromosome(self):
+        print(f"Name: {self.dataset.dataset_name} - Chromosome {self.children_id}")
+        for i in range(len(self.attributes_population)):
+            print(f"{self.attributes_population[i]}")
+        for i in range(len(self.population)):
+            print(f"{self.population[i]}")
+
+        print(f"Index List: {self.attributes_population_index}")
+
+        print(f"test_filename = {self.test_filename}")
+        print(f"training_filename = {self.training_filename}")
+        print()
+
+
     def get_attributes_population(self):
         return self.attributes_population
 
@@ -49,3 +70,25 @@ class Chromosome:
     
     def get_fitness(self):
         return self.chromosome_fitness
+    
+    def get_chromossome_path(self):
+        return self.children_path
+    
+    def get_output_nbayes(self):
+        return self.output_nbayes
+    
+    def get_training_filename(self):
+        return self.training_filename
+    
+    def get_test_filename(self):
+        return self.test_filename
+    
+    def get_usefulness(self):
+        return self.usefullness
+    
+    def get_mandatory_leaf_node_prediction(self):
+        return self.mandatory_leaf_node_prediction
+    
+
+
+    
