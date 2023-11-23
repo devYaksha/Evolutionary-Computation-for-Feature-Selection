@@ -14,7 +14,7 @@ class Dataset:
             pass
 
         finally:
-            self.dataset_attributes.pop(-1)
+            #self.dataset_attributes.pop(-1)
             self.dataset_name = self.dataset[0]
             self.dataset_attribute_class = self.dataset_attributes[-1]
             self.num_classes = 0

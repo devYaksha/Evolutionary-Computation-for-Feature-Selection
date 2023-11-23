@@ -1,6 +1,7 @@
 import os
 from chromossome import Chromosome
 from genetic_operators import *
+from discretize_data import *
 
 class GeneticAlgorithm:
     """This class is responsible for the genetic algorithm.
@@ -16,6 +17,8 @@ class GeneticAlgorithm:
     def __init__(self, population_size, num_attributes, num_generations, usefulness, mandatory_leaf_node_prediction, training_filename, test_filename):
 
         # Read and organize Dataset
+        print("Organizing Dataset") 
+
         self.delete_old_childrens()
 
         self.population_size = population_size
@@ -29,9 +32,9 @@ class GeneticAlgorithm:
         self.num_generations = num_generations
         
         # Start Genetic Algoritmh
-
+        print("Starting Genetic Algorithm")
         self.create_population()
-        
+        print("Population created")
         
         # Genetic Operators
 
@@ -73,7 +76,17 @@ class GeneticAlgorithm:
 
 if __name__ == "__main__":
     print("\033[H\033[J")
-    k = GeneticAlgorithm(2, 2, 1, 'y', 'y', "./datasets/simple_treino.arff", "./datasets/simple_test.arff")
+    
+    dataset_test = './datasets/cellcyle/CellCycle_test.arff'
+    discretized_test = './datasets/cellcyle/CellCycle_test_DiscretizedData.arff'
+    dataset_train = './datasets/cellcyle/CellCycle_train.arff'
+    discretized_train = './datasets/cellcyle/CellCycle_train_DiscretizedData.arff'
 
+    discretize_data(dataset_test, discretized_test)
+    discretize_data(dataset_train, discretized_train)
+
+
+
+    GA = GeneticAlgorithm(2, 2, 1, 'y', 'y', discretized_train, discretized_test)
 
     

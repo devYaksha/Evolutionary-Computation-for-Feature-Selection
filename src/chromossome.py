@@ -17,11 +17,15 @@ class Chromosome:
         self.usefullness = usefullness
         self.mandatory_leaf_node_prediction = mandatory_leaf_node_prediction
 
+        
         self.create_attributes_population()
         self.create_population()
 
+       
+
         self.chromosome_fitness = 0.0 #tests only
-        #self.chromosome_fitness = call_nbayes(usefullness, mandatory_leaf_node_prediction, training_filename, self.children_path, self.output_nbayes)
+        
+        self.chromosome_fitness = call_nbayes(usefullness, mandatory_leaf_node_prediction, training_filename, self.children_path, self.output_nbayes)
 
     def create_attributes_population(self):
         ordered_pop = [0] * len(self.dataset.get_dataset_attributes())
