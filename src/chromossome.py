@@ -23,7 +23,7 @@ class Chromosome:
 
        
 
-        self.chromosome_fitness = 0.0 #tests only
+        self.chromosome_fitness = 0.0 
         
         self.chromosome_fitness = call_nbayes(usefullness, mandatory_leaf_node_prediction, training_filename, self.children_path, self.output_nbayes)
 

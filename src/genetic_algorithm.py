@@ -2,6 +2,8 @@ import os
 from chromossome import Chromosome
 from genetic_operators import *
 from discretize_data import *
+from call_nbayes import *
+from plot import *
 
 class GeneticAlgorithm:
     """This class is responsible for the genetic algorithm.
@@ -37,14 +39,19 @@ class GeneticAlgorithm:
         print("Population created")
         
         # Genetic Operators
-
+        self.avarage_fitness = []
         for i in range(self.num_generations):
             
             self.calculate_population_fitness()
+            self.avarage_fitness.append(sum(self.population_fitness)/len(self.population_fitness))
             self.population = tournament(self.population, self.population_fitness, population_size)
             self.population = crossover(self.population, self.num_attributes)
             
+            print(self.avarage_fitness)
+            
             #mutation
+
+        plot_reta(self.avarage_fitness)
 
     def create_population(self):
         for i in range(self.population_size):
@@ -65,6 +72,7 @@ class GeneticAlgorithm:
 
 
     def calculate_population_fitness(self):
+        self.population_fitness.clear()
         self.population_fitness = [chromosome.get_fitness() for chromosome in self.population]
 
     def get_population(self):
@@ -84,9 +92,6 @@ if __name__ == "__main__":
 
     discretize_data(dataset_test, discretized_test)
     discretize_data(dataset_train, discretized_train)
-
-
-
-    GA = GeneticAlgorithm(2, 2, 1, 'y', 'y', discretized_train, discretized_test)
+    GA = GeneticAlgorithm(3, 30, 0, 'y', 'y', discretized_train, discretized_test)
 
     
