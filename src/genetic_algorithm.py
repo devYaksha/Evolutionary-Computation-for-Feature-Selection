@@ -18,9 +18,6 @@ class GeneticAlgorithm:
     """
     def __init__(self, population_size, num_attributes, num_generations, usefulness, mandatory_leaf_node_prediction, training_filename, test_filename):
 
-        # Read and organize Dataset
-        print("Organizing Dataset") 
-
         self.delete_old_childrens()
 
         self.population_size = population_size
@@ -32,41 +29,50 @@ class GeneticAlgorithm:
         self.population = []
         self.population_fitness = []
         self.num_generations = num_generations
+
+        self.num_chromossomes = 0
         
         # Start Genetic Algoritmh
         print("Starting Genetic Algorithm")
         self.create_population()
-        print("Population created")
+        print("First-Population created")
         
         # Genetic Operators
         self.avarage_fitness = []
         for i in range(self.num_generations):
             
             self.calculate_population_fitness()
-            self.avarage_fitness.append(sum(self.population_fitness)/len(self.population_fitness))
-            self.population = tournament(self.population, self.population_fitness, population_size)
-            self.population = crossover(self.population, self.num_attributes)
             
-            print(self.avarage_fitness)
-            
+            self.population = tournament(self.population, self.population_fitness, population_size//2)
+            self.population = crossover(self.population, self.num_attributes) #bugs
+            self.population = elitism(self.population, self.population_fitness)
+
             #mutation
 
-        plot_reta(self.avarage_fitness)
+            self.avarage_fitness.append(sum(self.population_fitness)/len(self.population_fitness))
+           
+            
+        plot_fitness(self.avarage_fitness)
+
+
+   
+    
 
     def create_population(self):
         for i in range(self.population_size):
             chromosome = Chromosome(
                 self.training_filename, self.test_filename, self.num_attributes,
-                self.usefulness, self.mandatory_leaf_node_prediction, len(self.population)
+                self.usefulness, self.mandatory_leaf_node_prediction, self.num_chromossomes
             )
             self.population.append(chromosome)
             chromosome.attributes_population_index.sort()
+            self.num_chromossomes += 1
 
     def delete_old_childrens(self):
         current_directory = "./datasets"
         files = os.listdir(current_directory)
         for file in files:
-            if file.endswith('.arff') and (file.startswith('c') or file.startswith('o')):
+            if file.endswith('.arff') and (file.startswith('c') or file.startswith('o')) or file.startswith('n'):
                 file_path = os.path.join(current_directory, file)
                 os.remove(file_path)
 
@@ -85,13 +91,11 @@ class GeneticAlgorithm:
 if __name__ == "__main__":
     print("\033[H\033[J")
     
-    dataset_test = './datasets/cellcyle/CellCycle_test.arff'
     discretized_test = './datasets/cellcyle/CellCycle_test_DiscretizedData.arff'
-    dataset_train = './datasets/cellcyle/CellCycle_train.arff'
     discretized_train = './datasets/cellcyle/CellCycle_train_DiscretizedData.arff'
 
-    discretize_data(dataset_test, discretized_test)
-    discretize_data(dataset_train, discretized_train)
-    GA = GeneticAlgorithm(3, 30, 0, 'y', 'y', discretized_train, discretized_test)
+    GA = GeneticAlgorithm(4, 30, 80, 'y', 'y', discretized_train, discretized_test)
+
+
 
     

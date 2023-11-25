@@ -67,15 +67,6 @@ def assign_labels(categories:list):
     label_list = [f"Label{i}" for i in range(1, len(categories) + 1)]
     return categories, label_list
 
-if __name__ == "__main__":
-    print("\033[H\033[J")
-    
-    dataset_test = './datasets/cellcyle/CellCycle_test.arff'
-    discretized_test = './datasets/cellcyle/CellCycle_test_DiscretizedData.arff'
-    dataset_train = './datasets/cellcyle/CellCycle_train.arff'
-    discretized_train = './datasets/cellcyle/CellCycle_train_DiscretizedData.arff'
 
-    discretize_data(dataset_test, discretized_test)
-    discretize_data(dataset_train, discretized_train)
 
     

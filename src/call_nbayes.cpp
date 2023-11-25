@@ -20,7 +20,7 @@ extern "C" {
         long double result = nbayes(mlnpStr, usfStr, training_dataset, test_dataset, result_file);
         float floatValue_result = result; 
 
-        std::cout << "Cpp Result: " << floatValue_result << std::endl;
+        //std::cout << "Cpp Result: " << floatValue_result << std::endl;
 
         return floatValue_result;
     }

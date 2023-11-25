@@ -1,22 +1,23 @@
-import os
-
 class Dataset:
 
     def __init__(self, filename):
+        #print(f"Organizing Dataset {filename}")
         self.dataset, self.dataset_attributes, self.dataset_data = self.get_dataset_info(filename)
 
         try:
             self.dataset.remove('')
             self.dataset_attributes.remove('')
             self.dataset_data.remove('')
+            
 
         except Exception as e:
             pass
 
         finally:
-            #self.dataset_attributes.pop(-1)
+            #print(f"Dataset: {self.dataset_attributes[-1]}")
             self.dataset_name = self.dataset[0]
             self.dataset_attribute_class = self.dataset_attributes[-1]
+            
             self.num_classes = 0
             self.num_features = 0
 
@@ -67,6 +68,7 @@ class Dataset:
 
                 attribute_str = ["@attribute class {"]
                 temp = self.get_dataset_attributes_class()
+
                 for item in temp:
                     if item != '{' and item != '}':
                         attribute_str.append(item)
@@ -100,4 +102,3 @@ class Dataset:
     def get_dataset_attributes_class(self):
         return self.dataset_attribute_class
 
-    

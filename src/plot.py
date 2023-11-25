@@ -1,23 +1,15 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
-def plot_reta(lista):
-    # Criar uma lista de índices para usar como eixo x
-    indices = list(range(1, len(lista) + 1))
-
-    # Criar uma figura e eixo
+def plot_fitness(valores):
+    indices = list(range(1, len(valores) + 1))
     fig, ax = plt.subplots()
+    ax.plot(indices, valores, marker='o', linestyle='-')
 
-    # Criar um gráfico de linha
-    ax.plot(indices, lista, marker='o', linestyle='-')
-
-    # Definir rótulos e título
-    ax.set_xlabel('Índice')
-    ax.set_ylabel('Valores da Lista')
-    ax.set_title('Gráfico de Reta')
-
-    # Inverter o eixo y para que a linha vá para cima com valores maiores
-    ax.invert_yaxis()
-
-    # Exibir o gráfico
+    ax.set_xlabel('Generation')
+    ax.set_ylabel('Fitness')
+    ax.set_title('Fitness by Generation') 
     plt.show()
+
+
 
