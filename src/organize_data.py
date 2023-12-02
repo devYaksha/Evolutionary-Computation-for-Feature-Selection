@@ -92,13 +92,22 @@ class Dataset:
 
     def get_dataset_attributes(self):
         return self.dataset_attributes
+    
+    def set_dataset_attributes(self, dataset_attributes):
+        self.dataset_attributes = dataset_attributes
 
     def get_dataset_data(self):
         return self.dataset_data
+    
+    def set_dataset_data(self, dataset_data):
+        self.dataset_data = dataset_data
 
     def get_dataset_name(self):
         return self.dataset_name
 
     def get_dataset_attributes_class(self):
         return self.dataset_attribute_class
+    
+    def set_dataset_attributes_class(self, dataset_attribute_class):
+        self.dataset_attribute_class = dataset_attribute_class
 
