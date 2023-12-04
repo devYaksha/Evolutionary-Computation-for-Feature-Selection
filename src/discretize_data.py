@@ -1,7 +1,16 @@
 from organize_data import Dataset
+from settings import *
 from sklearn.preprocessing import KBinsDiscretizer
 import numpy as np
+import pandas as pd
 import os
+
+from scipy.io import arff
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import StratifiedKFold
+
+
+
 
 def discretize_data(dataset_path: str, output_path: str, preprocessing = True) -> None:
     """Discretize data using KBinsDiscretizer, and makes pre-processing of the data classes,
@@ -80,7 +89,9 @@ def assign_labels(categories:list):
     return categories, label_list
 
 
-def dataset_preprocessing(attributes_class, dataset, minimum_classes = 10, num_classes_removed = 0):
+def dataset_preprocessing(attributes_class, dataset, minimum_classes = 10, num_classes_removed = 0, 
+                          
+                          ):
     recursion_check = 0
     for i in range(len(attributes_class)):
         num_classes_i = 0
@@ -106,7 +117,43 @@ def dataset_preprocessing(attributes_class, dataset, minimum_classes = 10, num_c
         print("Preprocessing done! number of classes removed: ", num_classes_removed, "\n")
         return attributes_class, dataset
 
+
+def cross_validation(path_test: str, path_train: str):
+    """Divide the dataset into 5 parts and save each part in a .arff file"""
+
+    # Load datasets
+    dataset_test = Dataset(path_test)
+    data_list_test = dataset_test.get_dataset_data()
+    dataset_train = Dataset(path_train)
+    data_list_train = dataset_train.get_dataset_data()
+
+    df_test = pd.DataFrame(data_list_test)
+    df_train = pd.DataFrame(data_list_train)
+    
+
+    X_test = df_test.iloc[:, :-1]   # Separating the attributes and 
+    y_test = df_test.iloc[:, -1]    # the classes for test dataset
+
+    # Using StratifiedKFold to maintain class proportions during cross-validation for test dataset
+    skf_test = StratifiedKFold(n_splits=5, random_state=42, shuffle=True)
+
+    for i, (train_index_test, test_index_test) in enumerate(skf_test.split(X_test, y_test)):
+        X_train_test, X_test_test = X_test.iloc[train_index_test], X_test.iloc[test_index_test]
+        y_train_test, y_test_test = y_test.iloc[train_index_test], y_test.iloc[test_index_test]
+
+        train_data_test = pd.concat([X_train_test, y_train_test], axis=1).astype(str).values.tolist()
+        test_data_test = pd.concat([X_test_test, y_test_test], axis=1).astype(str).values.tolist()
+        train_df_test = pd.DataFrame(train_data_test, columns=df_train.columns)
+        test_df_test = pd.DataFrame(test_data_test, columns=df_test.columns)
+
+        # Saving the DataFrames to .arff files
+        train_df_test.to_csv(f'train_data_train_{i + 1}.arff', index=False,header=False)
+        test_df_test.to_csv(f'test_data_test_{i + 1}.arff', index=False, header=False)
+
+
+
+
 if __name__ == "__main__":
     os.system('cls' if os.name == 'nt' else 'clear')
-    discretize_data("datasets/cellcyle/CellCycle_test.arff", "datasets/cellcyle/CellCycle_test_DiscretizedData.arff")
-    discretize_data("datasets/cellcyle/CellCycle_train.arff", "datasets/cellcyle/CellCycle_train_DiscretizedData.arff", preprocessing=False)
+
+    cross_validation('datasets/cellcyle/CellCycle_test_DiscretizedData.arff', 'datasets/cellcyle/CellCycle_train_DiscretizedData.arff')

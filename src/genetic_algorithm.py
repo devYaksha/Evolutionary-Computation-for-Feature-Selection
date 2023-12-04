@@ -26,33 +26,49 @@ class GeneticAlgorithm:
         self.mandatory_leaf_node_prediction = mandatory_leaf_node_prediction
         self.training_filename = training_filename
         self.test_filename = test_filename
-        self.population = []
-        self.population_fitness = []
+
+        self.best_fitness_global = float('-inf')
+        self.best_chromossome = None # Object Chromossome
+
+        self.population = [] # List of Chromossomes objects
+        self.population_fitness = [0 for i in range(population_size)]
         self.num_generations = num_generations
 
         self.num_chromossomes = 0
         
         # Start Genetic Algoritmh
-        print("Starting Genetic Algorithm")
+        os.system('clear')
+        print("*** Starting Genetic Algorithm ***")
         self.create_population()
-        print("First-Population created")
         
         # Genetic Operators
-        self.avarage_fitness = []
+        best_fitness_per_generation = []
+        average_arithmetic_fitness = []
+
         for i in range(self.num_generations):
-            
+            print(f"Generation {i+1}")
+            print("\033[H\033[J")
             self.calculate_population_fitness()
-            
-            self.population = tournament(self.population, self.population_fitness, population_size//2)
-            self.population = crossover(self.population, self.num_attributes) #bugs
             self.population = elitism(self.population, self.population_fitness)
+            self.population = tournament(self.population, self.population_fitness, population_size//2)
+            #self.population = crossover(self.population, self.num_attributes) #bugs
+            
 
             #mutation
 
-            self.avarage_fitness.append(sum(self.population_fitness)/len(self.population_fitness))
+            average_arithmetic_fitness.append(sum(self.population_fitness)/len(self.population_fitness))
+            best_fitness_per_generation.append(max(self.population_fitness))
+            if max(self.population_fitness) > self.best_fitness_global:
+                index = self.population_fitness.index(max(self.population_fitness))
+                self.best_fitness = max(self.population_fitness)
+                self.best_chromossome = self.population[index]
+
+
+            #pause()
            
-            
-        plot_fitness(self.avarage_fitness)
+        plot_fitness(average_arithmetic_fitness)
+        plot_fitness(best_fitness_per_generation)
+        print("Best fitness Global: ", self.best_fitness_global)
 
 
    
@@ -79,7 +95,13 @@ class GeneticAlgorithm:
 
     def calculate_population_fitness(self):
         self.population_fitness.clear()
-        self.population_fitness = [chromosome.get_fitness() for chromosome in self.population]
+        for i in range(len(self.population)):
+            self.population_fitness.append(self.population[i].get_fitness())
+            print(f"Chromossome {i} Fitness: {self.population_fitness[-1]}")
+
+        if max(self.population_fitness) > self.best_fitness_global:
+            self.best_fitness_global = max(self.population_fitness)
+
 
     def get_population(self):
         return self.population
@@ -88,13 +110,16 @@ class GeneticAlgorithm:
         return self.population_fitness
 
 
+def pause():
+    programPause = input("Press the <ENTER> key to continue...")
+
 if __name__ == "__main__":
     print("\033[H\033[J")
     
     discretized_test = './datasets/cellcyle/CellCycle_test_DiscretizedData.arff'
     discretized_train = './datasets/cellcyle/CellCycle_train_DiscretizedData.arff'
 
-    GA = GeneticAlgorithm(4, 30, 80, 'y', 'y', discretized_train, discretized_test)
+    GA = GeneticAlgorithm(100, 30, 10, 'y', 'y', discretized_train, discretized_test)
 
 
 

@@ -1,6 +1,9 @@
 class Dataset:
+    """class Dataset
+    """
 
-    def __init__(self, filename):
+    def __init__(self, filename) -> None:
+
         #print(f"Organizing Dataset {filename}")
         self.dataset, self.dataset_attributes, self.dataset_data = self.get_dataset_info(filename)
 

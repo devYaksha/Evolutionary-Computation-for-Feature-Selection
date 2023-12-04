@@ -1,9 +1,39 @@
 import random
 from chromossome import Chromosome
 
-def tournament(population_list:list,  fitness_list:list, fight_len=5, winner_chance=7.5):
+def elitism(population_list: list, fitness_list: list) -> list:
+    """Perform elitism in 1 chromossome of the population.
+
+    `Args:`
+        population_list (list): the list of chromossomes
+        fitness_list (list): the list of fitness of each chromossome
+
+    `Returns:`
+        list: a new population with the best chromossome of the previous population in a random position
+    """
+
+    elite_fitness = float('-inf')
+    elite_index = 0
+    max_local = (max(fitness_list))
+    elite_index = fitness_list.index(max_local)
+    elite_fitness = max_local
+    
+    rand_index = random.randint(0, len(population_list) - 1)
+    population_list[rand_index] = population_list[elite_index]
+
+    print(f"elite_fitness = {elite_fitness}, elite_index = {elite_index}, rand_index = {rand_index}")
+
+    return population_list
+
+
+def tournament(population_list:list,  fitness_list:list, winner_chance=7.5):
     survivors = []
     k = winner_chance
+    fight_len = len(population_list)//2
+
+    if fight_len < 2:
+        print("fight_len < 2, make sure that population_list is greater than 4")
+        return population_list
 
     for i in range(len(population_list)):
         fighters_fitness = []
@@ -13,23 +43,16 @@ def tournament(population_list:list,  fitness_list:list, fight_len=5, winner_cha
             fighters.append(population_list[index])
             fighters_fitness.append(fitness_list[index])
 
-        best_chromossome = [fighters_fitness[0],0]
-        worst_chromossome = [fighters_fitness[0],0]
-
-        for i in range(len(fighters)):
-            if fighters_fitness[i] >= best_chromossome[1]:
-                best_chromossome = (fighters_fitness[i], i)
-
-            elif fighters_fitness[i] < worst_chromossome[1]:
-                worst_chromossome = (fighters_fitness[i],i)
-
-        #print(f"best_chromossome, index = {best_chromossome}")
-        #print(f"worst_chromossome, index = {worst_chromossome}")
+        best_chromossome = max(fighters_fitness)
+        worst_chromossome = min(fighters_fitness)
+        index_of_best_chromossome = fighters_fitness.index(best_chromossome)
+        index_of_worst_chromossome = fighters_fitness.index(worst_chromossome)
 
         if random.random() < k:
-            survivors.append(fighters[best_chromossome[1]])
+            survivors.append(fighters[index_of_best_chromossome])
         else:
-            survivors.append(fighters[worst_chromossome[1]])
+            survivors.append(fighters[index_of_worst_chromossome])
+
     
     return survivors
     
@@ -72,28 +95,6 @@ def crossover(population_list: list, num_attributes: int):
     return childrens
 
 
-def elitism(population_list: list, fitness_list: list, num_elitism: int = 2):
-    """
-    Perform elitism on the population.
 
-    """
-    elite = []
-
-    # Select the top 'num_elitism' individuals
-    elite_indices = []
-    sorted_indices = sorted(range(len(fitness_list)), key=lambda k: fitness_list[k], reverse=True)
-
-    for i in range(num_elitism):
-        elite_indices.append(sorted_indices[i])
-
-    for index in elite_indices:
-        elite.append(population_list[index])
-
-    # Randomly replace individuals in the original population with elites
-    for i in range(num_elitism):
-        rand_index = random.randint(0, len(population_list) - 1)
-        population_list[rand_index] = elite[i]
-
-    return population_list
 
 

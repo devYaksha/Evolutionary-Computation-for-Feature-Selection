@@ -22,8 +22,6 @@ class Chromosome:
         self.create_population()
 
         self.chromosome_fitness = 0.0 
-        self.chromosome_fitness = call_nbayes(usefullness, mandatory_leaf_node_prediction, training_filename, self.children_path, self.output_nbayes)
-
 
     def create_attributes_population(self):
         ordered_pop = [0] * len(self.dataset.get_dataset_attributes())
@@ -84,7 +82,14 @@ class Chromosome:
     def get_population(self):
         return self.population
     
-    def get_fitness(self):
+    def get_fitness(self) -> float:
+        """ Call the Naive Bayes algorithm.
+
+        Returns:
+            float: return the fitness of the chromosome
+        """
+        self.chromosome_fitness = call_nbayes(self.usefullness, self.mandatory_leaf_node_prediction, 
+                                              self.training_filename, self.children_path, self.output_nbayes)
         return self.chromosome_fitness
     
     def get_chromossome_path(self):
