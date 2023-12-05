@@ -1,16 +1,11 @@
-from organize_data import Dataset
-from settings import *
-from sklearn.preprocessing import KBinsDiscretizer
 import numpy as np
 import pandas as pd
 import os
 
-from scipy.io import arff
-from sklearn.model_selection import train_test_split
+from dataset import Dataset
+from utils import *
+from sklearn.preprocessing import KBinsDiscretizer
 from sklearn.model_selection import StratifiedKFold
-
-
-
 
 def discretize_data(dataset_path: str, output_path: str, preprocessing = True) -> None:
     """Discretize data using KBinsDiscretizer, and makes pre-processing of the data classes,
@@ -29,7 +24,7 @@ def discretize_data(dataset_path: str, output_path: str, preprocessing = True) -
     """
     dataset = Dataset(dataset_path) # Create dataset object
     if preprocessing:
-        new_attributes, new_dataset = dataset_preprocessing(dataset.get_dataset_attributes_class(), dataset.dataset_data) # Preprocess dataset
+        new_attributes, new_dataset = classes_preprocessing(dataset.get_dataset_attributes_class(), dataset.dataset_data) # Preprocess dataset
         dataset.set_dataset_attributes_class(new_attributes) # Set new attributes
         dataset.set_dataset_data(new_dataset)  # Set new dataset data
 
@@ -77,7 +72,7 @@ def discretize_data(dataset_path: str, output_path: str, preprocessing = True) -
                 file.write(','.join(map(str, row)) + "," + labels[index] + '\n')
 
 def assign_labels(categories:list):
-    """Assign labels to each category
+    """Assign labels to each category, helper function for discretize_data
 
     `Args:`
         categories (list):  List of categories/labels
@@ -89,9 +84,33 @@ def assign_labels(categories:list):
     return categories, label_list
 
 
-def dataset_preprocessing(attributes_class, dataset, minimum_classes = 10, num_classes_removed = 0, 
-                          
-                          ):
+def classes_preprocessing(attributes_class, dataset,
+                          minimum_classes = 10, num_classes_removed = 0):
+    
+    """ Remove classes with less than 10 instances
+    
+    If during the preprocessing, a class has less than 10 instances, it will be removed.
+    
+    if a class is removed, the function will be called again, until all classes have more than 10 instances.
+    
+    `Example:`
+        - Class1: R.11.02.03.01 -> 5 instances
+        - >> Class1: R.11.02.03 -> 7 instances
+        - >> Class1: R.11.02 -> 9 instances
+        - >> Class1: R.11 -> 12 instances
+        
+        
+    `Args:`
+        - attributes_class (list): list of attributes and classes
+        - dataset (list): list of dataset data
+        - minimum_classes (int): minimum number of classes to be removed
+        - num_classes_removed (int): number of classes removed in the previous call of the function
+
+    Returns:
+        - None
+    """
+    
+    
     recursion_check = 0
     for i in range(len(attributes_class)):
         num_classes_i = 0
@@ -112,23 +131,33 @@ def dataset_preprocessing(attributes_class, dataset, minimum_classes = 10, num_c
             num_classes_removed += 1
         
     if recursion_check > 0:
-        return dataset_preprocessing(attributes_class, dataset, minimum_classes, num_classes_removed=num_classes_removed)  
+        return classes_preprocessing(attributes_class, dataset, minimum_classes, num_classes_removed=num_classes_removed)  
     else:
         print("Preprocessing done! number of classes removed: ", num_classes_removed, "\n")
         return attributes_class, dataset
 
 
-def cross_validation(path_test: str, path_train: str):
-    """Divide the dataset into 5 parts and save each part in a .arff file"""
+def five_folds(path_dataset: str, train=True) -> None:
+    """Divide the dataset into 5 parts, and each part is saved in a .arff file.
+    
+    The dataset is divided using StratifiedKFold,
+    to maintain class proportions during cross-validation.
+    
+    `Args:`
+        - path_dataset (str): the path of the dataset to be discretized
+        - train (bool): if the dataset is the train dataset or the test dataset, this is used to name the files.
+        
+    `Returns:`
+        - A new dataset with the discretized data.
+        
+    
+    """
 
     # Load datasets
-    dataset_test = Dataset(path_test)
+    dataset_test = Dataset(path_dataset)
     data_list_test = dataset_test.get_dataset_data()
-    dataset_train = Dataset(path_train)
-    data_list_train = dataset_train.get_dataset_data()
 
     df_test = pd.DataFrame(data_list_test)
-    df_train = pd.DataFrame(data_list_train)
     
 
     X_test = df_test.iloc[:, :-1]   # Separating the attributes and 
@@ -141,19 +170,38 @@ def cross_validation(path_test: str, path_train: str):
         X_train_test, X_test_test = X_test.iloc[train_index_test], X_test.iloc[test_index_test]
         y_train_test, y_test_test = y_test.iloc[train_index_test], y_test.iloc[test_index_test]
 
-        train_data_test = pd.concat([X_train_test, y_train_test], axis=1).astype(str).values.tolist()
         test_data_test = pd.concat([X_test_test, y_test_test], axis=1).astype(str).values.tolist()
-        train_df_test = pd.DataFrame(train_data_test, columns=df_train.columns)
         test_df_test = pd.DataFrame(test_data_test, columns=df_test.columns)
-
+        
         # Saving the DataFrames to .arff files
-        train_df_test.to_csv(f'train_data_train_{i + 1}.arff', index=False,header=False)
-        test_df_test.to_csv(f'test_data_test_{i + 1}.arff', index=False, header=False)
+        if train:
+            test_df_test.to_csv(f'train_data_test_{i + 1}.arff', index=False, header=False)
+        
+        else:
+            
+            test_df_test.to_csv(f'test_data_test_{i + 1}.arff', index=False, header=False)
 
+
+def cross_validation(dataset_test_path: str, dataset_train_path: str) -> None:
+    """Make cross validation using the 5 parts of the dataset, with nbayes global model algorithm.
+    
+    `Args:`
+        - dataset_test_path (str): the path of the test dataset
+        - dataset_train_path (str): the path of the train dataset
+        
+    `Returns:`
+        - None
+        
+    
+    """
+    
+    
+    pass
 
 
 
 if __name__ == "__main__":
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    cross_validation('datasets/cellcyle/CellCycle_test_DiscretizedData.arff', 'datasets/cellcyle/CellCycle_train_DiscretizedData.arff')
+    five_folds('datasets/cellcyle/CellCycle_test_DiscretizedData.arff', train=False)
+    five_folds('datasets/cellcyle/CellCycle_train_DiscretizedData.arff')

@@ -1,5 +1,14 @@
 class Dataset:
-    """class Dataset
+    """
+    
+    This class is used to organize the dataset information, such as the dataset name, 
+    the dataset attributes and the dataset data itself.
+    
+    `Args:`
+        - filename (str): the path of the dataset.
+        
+    
+    
     """
 
     def __init__(self, filename) -> None:

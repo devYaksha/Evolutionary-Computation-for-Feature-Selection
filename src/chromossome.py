@@ -1,6 +1,6 @@
 import random as rand
 from call_nbayes import *
-from organize_data import Dataset
+from dataset import Dataset
 
 class Chromosome:
     def __init__(self, training_filename: str, test_filename: str, population_size: int, usefullness: str, 

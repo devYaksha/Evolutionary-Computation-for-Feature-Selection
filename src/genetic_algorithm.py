@@ -1,9 +1,9 @@
 import os
 from chromossome import Chromosome
 from genetic_operators import *
-from discretize_data import *
+from preprocessing import *
 from call_nbayes import *
-from plot import *
+from matpltlib import *
 
 class GeneticAlgorithm:
     """This class is responsible for the genetic algorithm.
@@ -18,7 +18,7 @@ class GeneticAlgorithm:
     """
     def __init__(self, population_size, num_attributes, num_generations, usefulness, mandatory_leaf_node_prediction, training_filename, test_filename):
 
-        self.delete_old_childrens()
+        delete_old_childrens()
 
         self.population_size = population_size
         self.num_attributes = num_attributes
@@ -84,15 +84,6 @@ class GeneticAlgorithm:
             chromosome.attributes_population_index.sort()
             self.num_chromossomes += 1
 
-    def delete_old_childrens(self):
-        current_directory = "./datasets"
-        files = os.listdir(current_directory)
-        for file in files:
-            if file.endswith('.arff') and (file.startswith('c') or file.startswith('o')) or file.startswith('n'):
-                file_path = os.path.join(current_directory, file)
-                os.remove(file_path)
-
-
     def calculate_population_fitness(self):
         self.population_fitness.clear()
         for i in range(len(self.population)):
@@ -110,8 +101,6 @@ class GeneticAlgorithm:
         return self.population_fitness
 
 
-def pause():
-    programPause = input("Press the <ENTER> key to continue...")
 
 if __name__ == "__main__":
     print("\033[H\033[J")
