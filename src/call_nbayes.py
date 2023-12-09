@@ -1,15 +1,19 @@
 import os
 import ctypes
 
-def call_nbayes(mlnp:str, usf:str, training_dataset:str, test_dataset:str, result_file:str):
+def call_nbayes(training_dataset:str, test_dataset:str, result_file:str, mlnp:str = 'y', usf:str = 'y') -> float:
     """Call nbayes function from nbayes.so, read docs/GMNB_2009_Silla.pdf for more information.
     
-    Args:
+    `Args:`
         - mlnp (char 'y' or 'n'): Mandatory Leaf Node Prediction
         - usf (char 'y' or 'n'): Usefulness
         - training_dataset (str): path
         - test_dataset (str): path
         - result_file (str): path
+
+    `Returns:`
+        - result (float): the result of the nbayes algorithm
+
     """
 
     if not os.path.exists('./src/nbayes.so'):
@@ -33,8 +37,6 @@ def call_nbayes(mlnp:str, usf:str, training_dataset:str, test_dataset:str, resul
     result_file = bytes(result_file, 'utf-8')
 
     result = float(nbayes_dll.call_nbayes(mlnp, usf, training_dataset, test_dataset, result_file))
-
-    #print("PyResult: ", result) # Long double -> float
     
     return result
 

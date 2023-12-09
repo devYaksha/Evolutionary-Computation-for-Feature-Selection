@@ -6,6 +6,8 @@ from dataset import Dataset
 from utils import *
 from sklearn.preprocessing import KBinsDiscretizer
 from sklearn.model_selection import StratifiedKFold
+from call_nbayes import call_nbayes
+
 
 def discretize_data(dataset_path: str, output_path: str, preprocessing = True) -> None:
     """Discretize data using KBinsDiscretizer, and makes pre-processing of the data classes,
@@ -152,6 +154,8 @@ def five_folds(path_dataset: str, train=True) -> None:
         
     
     """
+    #
+    dataset = Dataset(path_dataset)
 
     # Load datasets
     dataset_test = Dataset(path_dataset)
@@ -175,33 +179,75 @@ def five_folds(path_dataset: str, train=True) -> None:
         
         # Saving the DataFrames to .arff files
         if train:
-            test_df_test.to_csv(f'train_data_test_{i + 1}.arff', index=False, header=False)
+            test_df_test.to_csv(f'train_data_{i + 1}.arff', index=False, header=False)
+            path = f'train_data_{i + 1}.arff'
         
         else:
             
-            test_df_test.to_csv(f'test_data_test_{i + 1}.arff', index=False, header=False)
+            test_df_test.to_csv(f'test_data_{i + 1}.arff', index=False, header=False)
+            path = f'test_data_{i + 1}.arff'
 
 
-def cross_validation(dataset_test_path: str, dataset_train_path: str) -> None:
+        fold_data = []
+        with open(path, 'r') as file:
+            for line in file:
+                fold_data.append(line)
+                fold_data[-1] = fold_data[-1].removesuffix('\n')
+
+
+        dataset.save_fold(path, fold_data)
+
+def cross_validation(dataset_test_path: str, dataset_train_path: str, num_folds = 5) -> None:
     """Make cross validation using the 5 parts of the dataset, with nbayes global model algorithm.
     
     `Args:`
-        - dataset_test_path (str): the path of the test dataset
-        - dataset_train_path (str): the path of the train dataset
+        - dataset_test_path (str): the path of the test dataset (chromosome)
+        - dataset_train_path (str): the path of the train dataset 
         
     `Returns:`
-        - None
-        
-    
+        - None    
     """
+
+    five_folds(dataset_test_path, train=False)
+    five_folds(dataset_train_path)
+    sum_nbayes = 0 
+    sum_itearation = 0
+    
+    for i in range(num_folds):
+        for j in range(num_folds):
+            if i != j:
+                print(f"train_data_{i + 1} -> ", f"test_data_{j + 1}")
+                sum_itearation += call_nbayes(f'train_data_{i + 1}.arff', f'test_data_{j + 1}.arff', f'result.arff')
+
+        sum_itearation /= num_folds
+        sum_nbayes += sum_itearation
+
+    sum_nbayes /= num_folds
+
     
     
-    pass
+    current_directory = os.getcwd()
+
+    for filename in os.listdir(current_directory): # Delete the files created by five_folds function
+        if filename.startswith("train_data") or filename.startswith("test_data") or filename.startswith("result"):
+            file_path = os.path.join(current_directory, filename)
+            os.remove(file_path)
+            #print(f"Deleted: {file_path}")
+
+    print(f"nbayes cross validation: {sum_nbayes}")
+
+    return sum_nbayes
 
 
 
 if __name__ == "__main__":
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    five_folds('datasets/cellcyle/CellCycle_test_DiscretizedData.arff', train=False)
-    five_folds('datasets/cellcyle/CellCycle_train_DiscretizedData.arff')
+    x = call_nbayes('datasets/cellcyle/CellCycle_train_DiscretizedData.arff', 
+                'datasets/cellcyle/CellCycle_test_DiscretizedData.arff', 
+                'result.arff')
+
+    
+    cross_validation('datasets/cellcyle/CellCycle_test_DiscretizedData.arff', 
+                     'datasets/cellcyle/CellCycle_train_DiscretizedData.arff')
+    print(f'nbayes global model: {x}')

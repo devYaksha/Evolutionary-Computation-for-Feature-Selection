@@ -76,6 +76,11 @@ class Dataset:
             with open(f'./datasets/chromossome_{num_children}.arff', 'w+') as file:
                 file.write(self.get_dataset_name() + '\n')
                 for i in range(len(attributes_population)):
+                    if attributes_population[i][0] != '@':
+                        temp = list(self.dataset_attributes[i].split(' '))
+                        temp.pop(0)
+                        temp = ' '.join(temp)
+                        self.dataset_attributes[i] = temp
                     file.write(attributes_population[i] + '\n')
 
                 attribute_str = ["@attribute class {"]
@@ -98,6 +103,38 @@ class Dataset:
                             file.write(',')
                     file.write('\n')
 
+
+    def save_fold(self,path, population:list):
+            with open(path, 'w+') as file:
+                file.write(self.get_dataset_name() + '\n')
+                for i in range(len(self.get_dataset_attributes())):
+                    self.dataset_attributes[i].removeprefix(" ") 
+                    if self.dataset_attributes[i][0] != '@':
+                        temp = list(self.dataset_attributes[i].split(' '))
+                        temp.pop(0)
+                        temp = ' '.join(temp)
+                        self.dataset_attributes[i] = temp
+                        
+
+                    file.write(self.dataset_attributes[i] + '\n')
+
+                attribute_str = ["@attribute class {"]
+                temp = self.get_dataset_attributes_class()
+
+                for item in temp:
+                    if item != '{' and item != '}':
+                        attribute_str.append(item)
+                        attribute_str.append(',')
+
+
+                attribute_str[-1] = '}'
+                attribute_str = ''.join(attribute_str)
+                file.write(attribute_str + '\n')
+                
+                file.write('@data\n')
+                for j in range(len(population)):
+                    file.write(population[j])
+                    file.write('\n')
 
     def get_dataset(self):
         return self.dataset

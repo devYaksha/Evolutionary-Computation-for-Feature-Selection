@@ -88,10 +88,12 @@ class Chromosome:
         Returns:
             float: return the fitness of the chromosome
         """
-        self.chromosome_fitness = call_nbayes(self.usefullness, self.mandatory_leaf_node_prediction, 
-                                              self.training_filename, self.children_path, self.output_nbayes)
+        self.chromosome_fitness = call_nbayes(self.training_filename, self.children_path, self.output_nbayes,
+                                              self.usefullness, self.mandatory_leaf_node_prediction,
+                                              
+                                              )
         return self.chromosome_fitness
-    
+        
     def get_chromossome_path(self):
         return self.children_path
     

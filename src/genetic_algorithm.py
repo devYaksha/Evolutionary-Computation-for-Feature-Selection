@@ -2,7 +2,6 @@ import os
 from chromossome import Chromosome
 from genetic_operators import *
 from preprocessing import *
-from call_nbayes import *
 from matpltlib import *
 
 class GeneticAlgorithm:
