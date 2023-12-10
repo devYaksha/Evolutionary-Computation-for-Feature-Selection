@@ -107,7 +107,7 @@ if __name__ == "__main__":
     discretized_test = './datasets/cellcyle/CellCycle_test_DiscretizedData.arff'
     discretized_train = './datasets/cellcyle/CellCycle_train_DiscretizedData.arff'
 
-    GA = GeneticAlgorithm(100, 30, 10, 'y', 'y', discretized_train, discretized_test)
+    GA = GeneticAlgorithm(6, 10, 10, 'y', 'y', discretized_train, discretized_test)
 
 
 

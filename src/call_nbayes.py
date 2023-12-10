@@ -17,12 +17,10 @@ def call_nbayes(training_dataset:str, test_dataset:str, result_file:str, mlnp:st
     """
 
     if not os.path.exists('./src/nbayes.so'):
-        print("Error: nbayes.so not found.")
-        return
+        raise Exception("Error: nbayes.so not found. Please compile the call_nbayes.cpp file.")
     
     if os.name == 'nt':
-        print("nbayes.so is not compatible with Windows.")
-        return
+        raise Exception("Error: nbayes.so is not compatible with Windows.")
 
     nbayes_dll = ctypes.CDLL('./src/nbayes.so')
 

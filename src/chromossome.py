@@ -1,6 +1,7 @@
 import random as rand
 from call_nbayes import *
 from dataset import Dataset
+from preprocessing import cross_validation
 
 class Chromosome:
     def __init__(self, training_filename: str, test_filename: str, population_size: int, usefullness: str, 
@@ -50,11 +51,6 @@ class Chromosome:
             if dataset[i][-1] not in attributes_class:
                 attributes_class.append(dataset[i][-1])
 
-        #self.dataset.dataset_attribute_class = attributes_class #Allow only when some bug happens 
-        
-        
-
-
         self.dataset.save_children(self.attributes_population, self.population, self.children_id)
         self.children_path = f'./datasets/chromossome_{self.children_id}.arff'
         self.output_nbayes = f'./datasets/nbayes_chromossome_{self.children_id}.arff'
@@ -88,10 +84,8 @@ class Chromosome:
         Returns:
             float: return the fitness of the chromosome
         """
-        self.chromosome_fitness = call_nbayes(self.training_filename, self.children_path, self.output_nbayes,
-                                              self.usefullness, self.mandatory_leaf_node_prediction,
-                                              
-                                              )
+        
+        self.chromosome_fitness = cross_validation(self.children_path, self.test_filename)
         return self.chromosome_fitness
         
     def get_chromossome_path(self):
