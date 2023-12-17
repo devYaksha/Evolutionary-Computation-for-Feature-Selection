@@ -89,9 +89,9 @@ def assign_labels(categories:list):
 def classes_preprocessing(attributes_class, dataset,
                           minimum_classes = 10, num_classes_removed = 0):
     
-    """ Remove classes with less than 10 instances
+    """ Remove classes with less than 10 instances or classes with only 'R' (root)
     
-    If during the preprocessing, a class has less than 10 instances, it will be removed.
+    During the preprocessing, if a class has less than 10 instances or is a root, it will be removed.
     
     if a class is removed, the function will be called again, until all classes have more than 10 instances.
     
@@ -110,21 +110,38 @@ def classes_preprocessing(attributes_class, dataset,
 
     Returns:
         - None
+    
     """
     
     
     recursion_check = 0
+    root = False
+
     for i in range(len(attributes_class)):
         num_classes_i = 0
+
         for j in range(len(dataset)):
-            if attributes_class[i] == dataset[j][-1]:
+
+            if attributes_class[i] == 'R':
+                root = True
+                break
+
+            elif attributes_class[i] == dataset[j][-1]:
                 num_classes_i += 1
-                
-        if num_classes_i < minimum_classes:
+
+
+        if root:
+            for object in dataset:
+                if object[-1] == 'R':
+                    print(f"Removing root") #Debug
+                    dataset.remove(object) # Remove object with root from dataset                    
+
+
+        elif num_classes_i < minimum_classes:
             temp = list(attributes_class[i].split('.'))
             temp.pop(-1)
             new_class = '.'.join(temp)
-            #print(f"Removing {attributes_class[i]} {num_classes_i} classes to -> {new_class}") #Debug
+            print(f"Removing {attributes_class[i]} {num_classes_i} classes to -> {new_class}") #Debug
             for k in range(len(dataset)):
                 if attributes_class[i] == dataset[k][-1]:
                     dataset[k][-1] = new_class
@@ -135,6 +152,12 @@ def classes_preprocessing(attributes_class, dataset,
     if recursion_check > 0:
         return classes_preprocessing(attributes_class, dataset, minimum_classes, num_classes_removed=num_classes_removed)  
     else:
+        for class_ in attributes_class:
+            if class_ == 'R':
+                print("Removing root in attributes_class") #Debug
+                attributes_class.remove(class_)
+                num_classes_removed += 1
+
         print("Preprocessing done! number of classes removed: ", num_classes_removed, "\n")
         return attributes_class, dataset
 
@@ -214,10 +237,12 @@ def cross_validation(dataset_test_path: str, dataset_train_path: str, num_folds 
     sum_itearation = 0
     
     for i in range(num_folds):
+        print(f"Test {i + 1}:", end=" ")
         for j in range(num_folds):
             if i != j:
-                print(f"train_data_{i + 1} -> ", f"test_data_{j + 1}")
-                sum_itearation += call_nbayes(f'train_data_{i + 1}.arff', f'test_data_{j + 1}.arff', f'result.arff')
+                print(f"Training {j + 1}", end=" -> ")
+                sum_itearation += call_nbayes(f'train_data_{j + 1}.arff', f'test_data_{i + 1}.arff', f'result.arff')
+        print()
 
         sum_itearation /= num_folds
         sum_nbayes += sum_itearation
@@ -227,7 +252,6 @@ def cross_validation(dataset_test_path: str, dataset_train_path: str, num_folds 
     
     
     current_directory = os.getcwd()
-
     for filename in os.listdir(current_directory): # Delete the files created by five_folds function
         if filename.startswith("train_data") or filename.startswith("test_data") or filename.startswith("result"):
             file_path = os.path.join(current_directory, filename)
@@ -242,12 +266,29 @@ def cross_validation(dataset_test_path: str, dataset_train_path: str, num_folds 
 
 if __name__ == "__main__":
     os.system('cls' if os.name == 'nt' else 'clear')
+    
+    #Example of use of the functions
 
-    x = call_nbayes('datasets/cellcyle/CellCycle_train_DiscretizedData.arff', 
-                'datasets/cellcyle/CellCycle_test_DiscretizedData.arff', 
-                'result.arff')
+    dataset_test_path = 'datasets/cellcyle/CellCycle_test_DiscretizedData.arff' # Discretized dataset
+    dataset_train_path = 'datasets/cellcyle/CellCycle_train_DiscretizedData.arff' # Discretized dataset 
+    
+    ### Classes preprocessing ###
+
+    """
+    chro = Dataset(dataset_train_path) # Create dataset object
+    att_class, data = classes_preprocessing(chro.get_dataset_attributes_class(), chro.dataset_data) # Preprocess dataset
+    chro.set_dataset_attributes_class(att_class) # Set new attributes
+    chro.save_children(chro.dataset_attributes, data, 0) # Save file with the new dataset
+
+    pause()
+
+    """
+    ### Cross validation ###
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+    x = call_nbayes(dataset_train_path, dataset_test_path, 'result.arff') # Call nbayes global model algorithm to compare with cross validation
+    cross_validation(dataset_test_path, dataset_train_path) # Call cross validation function
+    print(f'nbayes global model: {x}')
 
     
-    cross_validation('datasets/cellcyle/CellCycle_test_DiscretizedData.arff', 
-                     'datasets/cellcyle/CellCycle_train_DiscretizedData.arff')
-    print(f'nbayes global model: {x}')

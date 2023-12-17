@@ -17,7 +17,7 @@ class GeneticAlgorithm:
     """
     def __init__(self, population_size, num_attributes, num_generations, usefulness, mandatory_leaf_node_prediction, training_filename, test_filename):
 
-        delete_old_childrens()
+        #delete_old_childrens()
 
         self.population_size = population_size
         self.num_attributes = num_attributes

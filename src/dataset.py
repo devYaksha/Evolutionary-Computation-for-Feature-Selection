@@ -76,11 +76,11 @@ class Dataset:
             with open(f'./datasets/chromossome_{num_children}.arff', 'w+') as file:
                 file.write(self.get_dataset_name() + '\n')
                 for i in range(len(attributes_population)):
-                    if attributes_population[i][0] != '@':
+                    """if attributes_population[i][0] != '@':
                         temp = list(self.dataset_attributes[i].split(' '))
                         temp.pop(0)
                         temp = ' '.join(temp)
-                        self.dataset_attributes[i] = temp
+                        self.dataset_attributes[i] = temp"""
                     file.write(attributes_population[i] + '\n')
 
                 attribute_str = ["@attribute class {"]
