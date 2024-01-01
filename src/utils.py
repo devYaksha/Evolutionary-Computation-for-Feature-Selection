@@ -1,6 +1,6 @@
 import os
 
-def delete_old_childrens(self):
+def del_chromossomes(self):
     current_directory = "./datasets"
     files = os.listdir(current_directory)
     for file in files:
