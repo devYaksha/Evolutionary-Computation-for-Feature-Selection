@@ -57,7 +57,7 @@ def five_folds(path_dataset: str, type = "train") -> None:
         dataset.dataset_dict['description'] = description
  
 
-def cross_validation(dataset_test_path: str, dataset_train_path: str, num_folds = 5) -> None:
+def cross_validation(dataset_test_path: str, dataset_train_path: str, num_folds = 5) -> float:
     """Make cross validation using the 5 parts of the dataset, with nbayes global model algorithm.
     
     `Args:`
@@ -77,7 +77,7 @@ def cross_validation(dataset_test_path: str, dataset_train_path: str, num_folds 
     for i in range(num_folds):
         for j in range(num_folds):
             if i != j:
-                #print(f"Crossvalidation: test_{i} -> train_{j}")
+                #print(f"Cross-validation: test_{i} -> train_{j}")
                 sum_iteration += call_nbayes(f'train_{j}.arff', f'test_{i}.arff', f'result.arff')
 
 
@@ -94,7 +94,7 @@ def cross_validation(dataset_test_path: str, dataset_train_path: str, num_folds 
             file_path = os.path.join(current_directory, filename)
             os.remove(file_path)
 
-    print(f"GMNbayes cross-validation: {sum_nbayes}")
+    #print(f"GMNbayes cross-validation: {sum_nbayes}")
 
     return sum_nbayes
 

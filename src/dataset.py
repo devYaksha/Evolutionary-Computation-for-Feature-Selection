@@ -48,6 +48,6 @@ class Dataset:
 #
             
 if __name__ == "__main__":
-    i = Dataset('datasets/test.arff')
-    print(i.dataset_attributes[0])
+    i = Dataset('datasets/cellcyle/CellCycle_test_discretized.arff')
+    print(i.dataset_dict['data'][0])
 
