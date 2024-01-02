@@ -1,4 +1,5 @@
 import os
+from call_nbayes import *
 
 def del_chromossomes(self):
     current_directory = "./datasets"
@@ -11,3 +12,13 @@ def del_chromossomes(self):
             
 def pause():
     input("Press the <ENTER> key to continue...")
+
+
+#
+#
+#   Tests
+#
+#
+    
+if __name__ == "__main__":
+    pass

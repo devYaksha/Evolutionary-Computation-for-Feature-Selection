@@ -12,7 +12,7 @@ class genetic_operators:
         self.filepath = test_dataset_path
 
 
-    def create_population(self, population_size: int, num_attributes: int):
+    def create_population(self, population_size: int):
         """Create the initial population.
 
         `Args:`
@@ -21,11 +21,12 @@ class genetic_operators:
         """
 
         attributes = self.data.dataset_attributes[:-1]
-        if num_attributes > len(attributes):
-            print(f'Warning: the number of attributes ({num_attributes}) is greater than the number of attributes in the dataset ({len(attributes)})')
-            exit(1)
 
         for id in range(population_size):
+            num_attributes = random.randint(1, len(attributes))
+            print("NUMERO DE ATRIBUTOS: ", num_attributes)
+
+
             objects = []  # Initialize the list for each chromosome
             chromossome_attributes = random.sample(attributes, num_attributes)
             index_attributes = [attributes.index(attribute) for attribute in chromossome_attributes]
@@ -42,7 +43,6 @@ class genetic_operators:
 
             chromossome_attributes.append(self.data.dataset_attributes[-1])
             temporary_chromossome = Dataset(self.filepath)
-            temporary_chromossome.dataset_dict['description'] = ''
             temporary_chromossome.dataset_dict['attributes'] = chromossome_attributes
             temporary_chromossome.dataset_dict['data'] = objects
             temporary_chromossome.save_dataset(f'chromossome_{id}.arff')
@@ -51,14 +51,19 @@ class genetic_operators:
 
     def evaluate_fitness(self, population_size, training_path, cross_validation_check = True) -> list:
         chromossomes_fitness = []
-        if cross_validation_check:
-            for id in range(population_size):
-                chromossomes_fitness.append(cross_validation(f'chromossome_{id}.arff', training_path))
-            return chromossomes_fitness
-        
+
         for id in range(population_size):
-            chromossomes_fitness.append(call_nbayes(training_path, f'chromossome_{id}.arff', (f'./result_{id}.txt')))
+            test_path = (f"./chromossome_{id}.arff")
+
+            if cross_validation_check:
+                value = cross_validation(test_path, training_path)
+            else:
+                value = call_nbayes(training_path, test_path)
+
+            chromossomes_fitness.append(value)
+
         return chromossomes_fitness
+                
     
     def tournament_selection(self, population_size, fitness):
 

@@ -12,7 +12,6 @@ extern "C" {
     #endif
 
     EXPORT int call_nbayes(char mlnp, char usf, const char* training_dataset, const char* test_dataset, const char* result_file) {
-        //printf("Mandatory Leaf Node Prediction: %c \nUsefulness: %c \nTraining Dataset Path: %s \nTest Dataset: %s \nResult file path: %s\n", mlnp, usf, training_dataset, test_dataset, result_file);
         
         std::string mlnpStr(1, mlnp);  
         std::string usfStr(1, usf);   
@@ -20,7 +19,7 @@ extern "C" {
         long double result = nbayes(mlnpStr, usfStr, training_dataset, test_dataset, result_file);
         float floatValue_result = result; 
 
-        //std::cout << "Cpp Result: " << floatValue_result << std::endl;
+        //std::cout << "C++ Result: " << floatValue_result << std::endl << "Training-path: " << training_dataset << std::endl << "Test-path: " << test_dataset << std::endl;
 
         return floatValue_result;
     }

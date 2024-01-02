@@ -1,1 +1,2 @@
 https://github.com/renatopp/liac-arff
+sklearn.model_selection -> pip install -U scikit-learn

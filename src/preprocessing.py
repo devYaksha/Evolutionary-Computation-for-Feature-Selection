@@ -48,8 +48,7 @@ def discretize_data(dataset_path: str, output_path: str) -> None:
             break
         
         attributes[j] = (attributes[j][0], variance_per_feature)
-   
-    dataset.dataset_dict['description'] = 'discretized' # Update dataset name
+        
     dataset.dataset_dict['attributes'] = attributes # Update dataset attributes
     dataset.dataset_dict['data'] = data # Update dataset data
 
@@ -102,7 +101,7 @@ def classes_preprocessing(dataset_path: str, output_path: str) -> None:
             attributes_class[1][i] = new_attribute
             recursion_check = True
 
-    dataset.dataset_dict['relation'] = 'preprocessed'
+
     dataset.dataset_dict['attributes'][-1] = attributes_class
     dataset.dataset_dict['data'] = dataset_objects
     dataset.save_dataset(output_path)
@@ -112,4 +111,14 @@ def classes_preprocessing(dataset_path: str, output_path: str) -> None:
     
 
 
-    
+#
+#   Usage
+#
+
+if __name__ == "__main__":
+    discretize_data("datasets/cellcyle/CellCycle_test.arff", "./datasets/test_test.arff")
+    discretize_data("datasets/cellcyle/CellCycle_train.arff", "./datasets/test_train.arff")
+    classes_preprocessing("./datasets/test_train.arff", "./datasets/test_train.arff")
+    classes_preprocessing("./datasets/test_test.arff","./datasets/test_test.arff")
+
+    pass
