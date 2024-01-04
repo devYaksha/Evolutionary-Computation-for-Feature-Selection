@@ -1,5 +1,5 @@
 from genetic_operators import *
-from preprocessing import *
+from dataset import *
 
 
 class GeneticAlgorithm:
@@ -51,6 +51,8 @@ class GeneticAlgorithm:
 
             chromossome_fitness = operators.evaluate_fitness(population_size, training_filepath, cross_validation_check = False)
             utils.print_population_fitness(chromossome_fitness, generation)
+
+            utils.pause()
             
 
         utils.delete_chromossomes()

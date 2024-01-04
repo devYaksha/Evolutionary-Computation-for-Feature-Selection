@@ -24,6 +24,7 @@ class genetic_operators:
 
         for id in range(population_size):
             num_attributes = random.randint(1, len(attributes))
+            #num_attributes = 1
 
             objects = []  # Initialize the list for each chromosome
             chromossome_attributes = random.sample(attributes, num_attributes)
