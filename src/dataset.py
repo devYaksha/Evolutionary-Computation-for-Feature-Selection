@@ -1,5 +1,6 @@
 import arff
 import numpy as np
+from utils import *
 from collections import defaultdict
 from sklearn.preprocessing import KBinsDiscretizer
 from utils import *
@@ -40,7 +41,7 @@ class Dataset:
         """
         
         try:
-            arff.dump(self.dataset_dict, open(path, 'w'))
+            arff.dump(self.dataset_dict, open(path, 'w+'))
         except:
             print("Error saving the dataset.")
   
@@ -48,6 +49,7 @@ class Dataset:
 class DatasetManipulator:
 
     def discretize_data(self, dataset_path: str, output_path: str) -> None:
+
         """Discretize data using KBinsDiscretizer
 
         `Args:`
@@ -89,53 +91,68 @@ class DatasetManipulator:
         for j in range(len(attributes)):
             if attributes[j][0].upper() == 'CLASS':
                 break
-
+            
             attributes[j] = (attributes[j][0], variance_per_feature)
-
-
             
         dataset.dataset_dict['attributes'] = attributes # Update dataset attributes
         dataset.dataset_dict['data'] = data # Update dataset data
 
         dataset.save_dataset(output_path) # Save the dataset in a new file
+
     
 
-    def minimum_classes(self, dataset_path: str, output_path: str) -> None:
-        """Remove classes with less than 10 instances or classes with only 'R' (root).
+    def minimum_classes(self, dataset_path: str, output_path: str, minimum = 10) -> None:
         
-        If a class is removed, the function will be called again until all classes have more than 10 instances.
+        """ Remove classes with less than 10 instances or classes with only 'R' (root)
+        
+        if a class is removed, the function will be called again, until all classes have more than 10 instances.
+        
         """
-        dataset = Dataset(dataset_path)  # Create dataset object
+        utils = Utils()
+        dataset = Dataset(dataset_path) # Create dataset object
 
-        attributes_class = dataset.dataset_attributes[-1]  # Get dataset attributes
-        dataset_objects = dataset.dataset_objects
-        minimum_classes = 10
+        attributes_class = dataset.dataset_attributes[-1]
+        attributes = dataset.dataset_attributes[:-1]
+        objects = dataset.dataset_objects
+
+        filtered_attributes = []
+        filtered_objects = []
+
+        count = 0
         recursion_check = False
 
-        # Count the number of instances for each class
-        class_counts = defaultdict(int)
-        for obj in dataset_objects:
-            class_counts[obj[-1]] += 1
+        for attribute in attributes_class[1]:
+            if attribute != 'R':
+                filtered_attributes.append(attribute)
+        for object in objects:
+            if object[-1] != 'R':
+                filtered_objects.append(object)
 
-        for i in range(len(attributes_class[1])):
-            current_class = attributes_class[1][i]
 
-            if class_counts[current_class] < minimum_classes or current_class == 'R':
-                new_attribute = current_class.split('.')
-                new_attribute.pop()
-                new_attribute = '.'.join(new_attribute)
+        for i in range(len(filtered_attributes[1])):
+            for j in range(len(filtered_objects)):
+                if filtered_attributes[i] == filtered_objects[j][-1]:
+                    count += 1
 
-                print(f"Changing class {current_class} with {class_counts[current_class]} instances to -> {new_attribute}")
+            if count < minimum: 
+                new_attributes = filtered_attributes[i].split('.')
+                new_attributes.pop()
+                new_attributes = '.'.join(new_attributes)
 
-                for j in range(len(dataset_objects)):
-                    if dataset_objects[j][-1] == current_class:
-                        dataset_objects[j][-1] = new_attribute
-
-                attributes_class[1][i] = new_attribute
+                print(f"Changing class {filtered_attributes[i]} with {count} instances from {new_attributes}")
                 recursion_check = True
 
-        dataset.dataset_dict['attributes'][-1] = attributes_class
-        dataset.dataset_dict['data'] = dataset_objects
+                if new_attributes == 'R':
+                    print("The class is root, removing it.")
+
+                for k in range(len(filtered_objects)):
+                    if filtered_attributes[i] == filtered_objects[k][-1]:
+                        filtered_objects[k][-1] = new_attributes
+                
+                filtered_attributes[i] = new_attributes
+
+        dataset.dataset_dict['attributes'][-1] = ('class', filtered_attributes)
+        dataset.dataset_dict['data'] = filtered_objects
         dataset.save_dataset(output_path)
 
         if recursion_check:

@@ -34,4 +34,8 @@ class Utils:
         print(f"Average fitness: {sum(population_fitness) / len(population_fitness)}")
         
         print()
+
+
+    def clear_screen(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
     
