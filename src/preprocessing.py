@@ -116,9 +116,15 @@ def classes_preprocessing(dataset_path: str, output_path: str) -> None:
 #
 
 if __name__ == "__main__":
-    discretize_data("datasets/cellcyle/CellCycle_test.arff", "./datasets/test_test.arff")
-    discretize_data("datasets/cellcyle/CellCycle_train.arff", "./datasets/test_train.arff")
-    classes_preprocessing("./datasets/test_train.arff", "./datasets/test_train.arff")
-    classes_preprocessing("./datasets/test_test.arff","./datasets/test_test.arff")
+    
+    folder_path = '/home/yksh/Desktop/bases_particionadas'
 
-    pass
+    train_path = f'{folder_path}/SPO/10-folds/fold0/SPO_train.arff'
+    test_path = f'{folder_path}/SPO/10-folds/fold0/SPO_test.arff'
+
+
+    output_train_path = f'{folder_path}/SPO/10-folds/fold0/SPO_train_discretized.arff'
+    output_test_path = f'{folder_path}/SPO/10-folds/fold0/SPO_test_discretized.arff'
+
+    discretize_data(train_path, output_train_path)
+    discretize_data(test_path, output_test_path)

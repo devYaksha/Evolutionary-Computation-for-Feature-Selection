@@ -1,7 +1,7 @@
 #include <string>
 #include "./HFS-GMNB/nbayes.h"
 
-// g++ -shared -fPIC -o ./src/nbayes.so ./src/HFS-GMNB/*.cpp ./src/call_nbayes.cpp
+// g++ -shared -fPIC -o ./src/nbayes.so ./src/GMNB/*.cpp ./src/call_nbayes.cpp
 
 extern "C" {
 

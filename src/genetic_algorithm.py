@@ -28,27 +28,33 @@ class GeneticAlgorithm:
 
     """
 
-    def __init__(self, population_size, num_generations, training_filepath, test_filepath):
+    def __init__(self, population_size, num_generations, training_filepath, test_filepath) -> None:
+        
+        operators = genetic_operators(test_filepath)   
+        utils = Utils()
 
-        operators = genetic_operators(test_filepath)        
+
+        #                                               #
+        #                                               #
+        #                                               #
+        #                                               #
+        #           Starting the Algorithm              #
+        #                                               #
+        #                                               #
+        #                                               #
+        #                                               #
+
+
         operators.create_population(population_size)
 
-        for _ in range(num_generations):
+        for generation in range(num_generations):
+
             chromossome_fitness = operators.evaluate_fitness(population_size, training_filepath, cross_validation_check = False)
-            print(chromossome_fitness)
+            utils.print_population_fitness(chromossome_fitness, generation)
             
-            #operators.tournament_selection(population_size, chromossome_fitness)
 
+        utils.delete_chromossomes()
 
-
-if __name__ == "__main__":
-    print("\033[H\033[J")
-    
-    discretized_test = './datasets/test_test.arff'
-    discretized_train = './datasets/test_train.arff'
-
-
-    GA = GeneticAlgorithm(5, 1, discretized_train, discretized_test)
 
 
 

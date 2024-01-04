@@ -24,8 +24,6 @@ class genetic_operators:
 
         for id in range(population_size):
             num_attributes = random.randint(1, len(attributes))
-            print("NUMERO DE ATRIBUTOS: ", num_attributes)
-
 
             objects = []  # Initialize the list for each chromosome
             chromossome_attributes = random.sample(attributes, num_attributes)
@@ -94,7 +92,7 @@ class genetic_operators:
 
 if __name__ == "__main__":
     os.system("clear")
-    os.system("python3 src/genetic_algorithm.py")
+    os.system("python3 src/main.py")
         
 
 

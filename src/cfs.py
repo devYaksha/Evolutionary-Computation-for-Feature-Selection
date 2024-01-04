@@ -1,12 +1,9 @@
 import numpy as np
 
 #
-# Este código foi desenvolvido para desempenhar diversas operações relacionadas à seleção de recursos 
-# e análise de correlação no âmbito do aprendizado de máquina e da análise de dados. 
 # As funcionalidades aqui apresentadas têm como objetivo avaliar as relações entre 
 # distintas características dentro de um conjunto de dados, abrangendo tanto 
 # atributos numéricos quanto categóricos.
-# Isso inclui  classificação hierárquica de multi-rótulo.
 #
 # 15/10/2023 
 
