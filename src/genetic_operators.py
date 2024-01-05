@@ -7,94 +7,105 @@ from cross_validation import *
 
 class genetic_operators:
 
-    def __init__(self, test_dataset_path) -> None:
-        self.data = Dataset(test_dataset_path)
-        self.filepath = test_dataset_path
-
-
-    def create_population(self, population_size: int):
-        """Create the initial population.
-
-        `Args:`
-            population_size (int): the size of the population
-            num_attributes (int): the number of attributes that will be selected in each chromosome
-        """
-
-        attributes = self.data.dataset_attributes[:-1]
-
-        for id in range(population_size):
-            num_attributes = random.randint(1, len(attributes))
-            #num_attributes = 1
-
-            objects = []  # Initialize the list for each chromosome
-            chromossome_attributes = random.sample(attributes, num_attributes)
-            index_attributes = [attributes.index(attribute) for attribute in chromossome_attributes]
-
-            # Sort index_attributes and use the sorted order to sort chromossome_attributes
-            sorted_indices = sorted(range(len(index_attributes)), key=lambda k: index_attributes[k])
-            index_attributes = [index_attributes[i] for i in sorted_indices]
-            chromossome_attributes = [chromossome_attributes[i] for i in sorted_indices]
-
-            for i in range(len(self.data.dataset_objects)):
-                subset = [str(self.data.dataset_objects[i][j]) for j in index_attributes]
-                subset.append(str(self.data.dataset_objects[i][-1]))  # Append the last element as a string
-                objects.append(subset)
-
-            chromossome_attributes.append(self.data.dataset_attributes[-1])
-            temporary_chromossome = Dataset(self.filepath)
-            temporary_chromossome.dataset_dict['attributes'] = chromossome_attributes
-            temporary_chromossome.dataset_dict['data'] = objects
-            temporary_chromossome.save_dataset(f'chromossome_{id}.arff')
-
-            
-
-    def evaluate_fitness(self, population_size, training_path, cross_validation_check = True) -> list:
-        chromossomes_fitness = []
-
-        for id in range(population_size):
-            test_path = (f"./chromossome_{id}.arff")
-
-            if cross_validation_check:
-                value = cross_validation(test_path, training_path)
-            else:
-                value = call_nbayes(training_path, test_path)
-
-            chromossomes_fitness.append(value)
-
-        return chromossomes_fitness
-                
-    
-    def tournament_selection(self, population_size, fitness):
-
-        winner_chance = 0.75
-
-        for _ in range(population_size):
-            fighters = random.sample(fitness, 2)
-            index_fighters = [fighters.index(attribute) for attribute in fitness]
-            print(fighters)
-            print(index_fighters)
-
-
+    def __init__(self) -> None:
         pass
-        
 
 
+    def tournament_selection(self, population, fitness_scores, tournament_size = 2, k = 0.75):
+        selected_parents = []
+        for _ in range(len(population)):
+            tournament_indices = random.sample(range(len(population)), tournament_size)
+            tournament_candidates = [population[i] for i in tournament_indices]
+            tournament_fitness = [fitness_scores[i] for i in tournament_indices]
 
+            if random.random() < k:
+                selected_parent = tournament_candidates[tournament_fitness.index(max(tournament_fitness))]
+            else:
+                selected_parent = tournament_candidates[tournament_fitness.index(min(tournament_fitness))]
 
+            selected_parents.append(selected_parent)
+        return selected_parents
 
+    def pmx_crossover_chromossomes(self, parent1, parent2):
+        crossover_point1 = random.randint(0, len(parent1) - 1)
+        crossover_point2 = random.randint(crossover_point1 + 1, len(parent1))
 
+        child = [-1] * len(parent1)
+        elements_in_child = set(parent1[crossover_point1:crossover_point2])
+
+        for i in range(crossover_point1, crossover_point2):
+            child[i] = parent1[i]
+
+        for i in range(len(parent2)):
+            if parent2[i] not in elements_in_child:
+                empty_index = child.index(-1)
+                child[empty_index] = parent2[i]
+                elements_in_child.add(parent2[i])
+
+        # Ensure the child is a valid binary representation
+        for i in range(len(child)):
+            if child[i] == -1:
+                child[i] = parent2[i]  # Fill remaining positions with values from the second parent
+
+        return child
+
+    def pmx_crossover(self, population, crossover_rate=0.8):
+        new_population = []
+        for i in range(0, len(population)-1, 2):
+            parent1 = population[i]
+            parent2 = population[i + 1]
+
+            if random.random() < crossover_rate:
+                child1 = self.pmx_crossover_chromossomes(parent1, parent2)
+                child2 = self.pmx_crossover_chromossomes(parent2, parent1)
+            else:
+                child1 = parent1
+                child2 = parent2
+
+            new_population.append(child1)
+            new_population.append(child2)
+
+        return new_population
     
 
-       
+    def swap_mutation(self, population, mutation_rate=0.1):
+        for i in range(len(population)):
+            if random.random() < mutation_rate:
+                mutation_point1 = random.randint(0, len(population[i]) - 1)
+                mutation_point2 = random.randint(0, len(population[i]) - 1)
+
+                population[i][mutation_point1], population[i][mutation_point2] = population[i][mutation_point2], \
+                                                                                 population[i][mutation_point1]
+
+        return population
 
 
-        
 
 
+
+#                                                                   #
+#                                                                   #
+#                   Usage examples:                                 #
+#                                                                   #
+#                                                                   #
+#                                                                   #
+    
 if __name__ == "__main__":
-    os.system("clear")
-    os.system("python3 src/main.py")
-        
+
+    operators = genetic_operators()
+    population = [[1, 1, 0, 0, 1], [0, 1, 0, 0, 0], [1, 1, 0, 1, 1], [0, 1, 0, 0, 0]]  # list of chromosomes 
+    fitness_scores = [34.72222137451172, 23.58974266052246, 24.72222137451172, 15.58974266052246]  # Corresponding fitness 
+
+    # Tournament Selection
+    selected_parents = operators.tournament_selection(population, fitness_scores)
+    print(selected_parents)
+
+    # PMX Crossover
+    child = operators.pmx_crossover(selected_parents)
+    print(child)
+
+    child = operators.swap_mutation(population)
+    print(child)
 
 
 

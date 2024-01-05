@@ -1,4 +1,6 @@
 import os
+import matplotlib.pyplot as plt
+
 from call_nbayes import *
 
 class Utils:
@@ -38,4 +40,20 @@ class Utils:
 
     def clear_screen(self):
         os.system('cls' if os.name == 'nt' else 'clear')
+
+
+    def plot_fitness_history(self, fitness_history, title = 'Avarage-Fitness History'):
+        """
+        Plot the fitness history.
+
+        Parameters:
+        - fitness_history (list): List containing fitness scores for each generation.
+        """
+        # Plotting the fitness history
+        plt.plot(range(1, len(fitness_history) + 1), fitness_history, marker='o', linestyle='-')
+        plt.title(title)
+        plt.xlabel('Generation')
+        plt.ylabel('Fitness Score')
+        plt.grid(True)
+        plt.show()
     
