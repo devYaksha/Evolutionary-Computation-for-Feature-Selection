@@ -1,4 +1,4 @@
-# Application of Genetic Algorithms for Feature Selection in Hierarchical Classification
+# A Genetic Algorithm for Feature Selection in Hierarchical Classification
 
 Feature selection is a widely adopted preprocessing step in the field of data mining. One of its objectives is to reduce the number of original attributes in a database to enhance the performance of a predictive model. 
 
