@@ -1,9 +1,11 @@
+import pandas as pd
+import os
+
 from dataset import Dataset    
 from sklearn.model_selection import StratifiedKFold
 from call_nbayes import call_nbayes
 
-import pandas as pd
-import os
+
 
 def five_folds(path_dataset: str, type = "train") -> None:
     """Divide the dataset into 5 parts, and each part is saved in a .arff file.

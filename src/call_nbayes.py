@@ -3,7 +3,6 @@ import ctypes
 
 def call_nbayes(training_dataset:str, test_dataset:str, result_file:str = './result.arff', mlnp:str = 'y', usf:str = 'y') -> float:
     """Call nbayes function from nbayes.so, read docs/GMNB_2009_Silla.pdf for more information.
-        The .os compilation file is at 'docs/HFS-GMNB/call_nbayes.cpp'.
     
     `Args:`
         - mlnp (char 'y' or 'n'): Mandatory Leaf Node Prediction

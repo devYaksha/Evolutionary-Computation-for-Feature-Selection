@@ -11,7 +11,7 @@ class genetic_operators:
         pass
 
 
-    def tournament_selection(self, population, fitness_scores, tournament_size = 2, k = 0.75):
+    def tournament_selection(self, population:list, fitness_scores:list, tournament_size = 2, k = 0.75) -> list:
         selected_parents = []
         for _ in range(len(population)):
             tournament_indices = random.sample(range(len(population)), tournament_size)
@@ -49,7 +49,7 @@ class genetic_operators:
 
         return child
 
-    def pmx_crossover(self, population, crossover_rate=0.8):
+    def pmx_crossover(self, population:list, crossover_rate=0.8) -> list:
         new_population = []
         for i in range(0, len(population)-1, 2):
             parent1 = population[i]
@@ -68,7 +68,7 @@ class genetic_operators:
         return new_population
     
 
-    def swap_mutation(self, population, mutation_rate=0.1):
+    def swap_mutation(self, population:list, mutation_rate=0.1) -> list:
         for i in range(len(population)):
             if random.random() < mutation_rate:
                 mutation_point1 = random.randint(0, len(population[i]) - 1)
@@ -78,6 +78,24 @@ class genetic_operators:
                                                                                  population[i][mutation_point1]
 
         return population
+    
+
+    def elitism(self, population:list, fitness_scores:list, num_elites:int) -> list:
+        """
+        Selects elite individuals based on fitness scores and replaces random individuals in the population with them.
+        """
+        elites = []
+        for _ in range(num_elites):
+            max_index, max_fitness = max(enumerate(fitness_scores), key=lambda x: x[1])
+            elites.append(population[max_index])
+            fitness_scores.pop(max_index)
+
+        for elite_individual in elites:
+            random_index = random.randint(0, len(population) - 1)
+            population[random_index] = elite_individual
+
+        return population
+
 
 
 
@@ -98,14 +116,17 @@ if __name__ == "__main__":
 
     # Tournament Selection
     selected_parents = operators.tournament_selection(population, fitness_scores)
-    print(selected_parents)
 
     # PMX Crossover
     child = operators.pmx_crossover(selected_parents)
-    print(child)
+    
 
     child = operators.swap_mutation(population)
     print(child)
+
+    elits = operators.elitism(population, fitness_scores, 1)
+    print(elits)
+
 
 
 

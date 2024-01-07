@@ -1,9 +1,9 @@
 import arff
 import numpy as np
+
 from utils import *
-from collections import defaultdict
 from sklearn.preprocessing import KBinsDiscretizer
-from utils import *
+
 
 class Dataset:
     """

@@ -49,7 +49,7 @@ class Attributes_ClassPopulation:
         return population
 
         
-    def convert_chromossome_to_file(self, chromosome: list) -> None:
+    def convert_chromossome_to_file(self, chromosome: list, path = None) -> None:
         """
         Convert a chromosome list with binary encoding (e.g., [0, 1, 0, 1]) to a .arff file.
 
@@ -59,8 +59,11 @@ class Attributes_ClassPopulation:
             chromosome (list): Binary-encoded chromosome representing attribute selection.
 
         Note:
-            The resulting .arff file is saved as `chromossome.arff`, by the default self.chromossome_path.
+            The resulting .arff file is saved as `chromossome.arff`, by the default self.chromossome_path, if the path is not specified.
         """
+
+        if path == None:
+            path = self.chromossome_path
 
         temporary_chromossome = Dataset(self.filepath)
         attributes_class = self.data.dataset_attributes[-1][1]
@@ -83,7 +86,7 @@ class Attributes_ClassPopulation:
         
         temporary_chromossome.dataset_dict['data'] = objects
         temporary_chromossome.dataset_dict['attributes'][-1] = ('class', attributes)
-        temporary_chromossome.save_dataset(self.chromossome_path)
+        temporary_chromossome.save_dataset(path)
 
     def evaluate_fitness(self, population, training_path, cross_validation_check = False) -> list:
         chromossomes_fitness = []
@@ -101,8 +104,6 @@ class Attributes_ClassPopulation:
 
         return chromossomes_fitness
     
-
-
 
 #                                                                   #
 #                                                                   #
