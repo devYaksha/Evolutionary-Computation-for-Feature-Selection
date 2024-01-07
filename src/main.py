@@ -35,8 +35,8 @@ if set_minimum_classes:
 
 
 # Genetic Algorithm variables
-population_size = 10
-num_generations = 5
+population_size = 50
+num_generations = 100
 cross_validation = False
 GeneticAlgorithm(population_size, num_generations, train_path, test_path, cross_validation) # Genetic Algorithm object
 

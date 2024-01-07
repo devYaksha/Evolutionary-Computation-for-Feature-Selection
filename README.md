@@ -16,6 +16,8 @@ The main goalis to propose the development of a hybrid feature selection method 
    - Scalable;
    - Capable of reducing the number of attributes in databases without compromising the classification model's performance.
 
+   - <img src="docs/readme-files/fitness-example.png" alt="fitness">
+
 2. **Experiments**: Conducting computational experiments using hierarchical databases related to protein function prediction and image problems.
 
 3. **Analyzing the state of the art**: Comparing the proposed approach with other feature selection methods available in the literature and with the use of global classifiers without attribute selection.
